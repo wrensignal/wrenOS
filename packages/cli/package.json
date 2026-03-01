@@ -1,0 +1,9 @@
+{
+  "name": "@0xclaw/cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "0xclaw": "src/index.mjs"
+  }
+}

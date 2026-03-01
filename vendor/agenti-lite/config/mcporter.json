@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "agenti": {
+      "command": "node",
+      "env": {
+        "PRIVATE_KEY": "${ROOK_EVM_PRIVATE_KEY}",
+        "X402_PRIVATE_KEY": "${ROOK_EVM_PRIVATE_KEY}",
+        "X402_CHAIN": "base"
+      }
+    }
+  },
+  "imports": []
+}

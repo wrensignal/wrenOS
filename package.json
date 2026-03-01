@@ -1,0 +1,17 @@
+{
+  "name": "0xclaw",
+  "private": true,
+  "version": "0.1.0",
+  "description": "OpenClaw crypto compatibility kit",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "echo 'build: placeholder'",
+    "test": "echo 'test: placeholder'",
+    "lint": "echo 'lint: placeholder'"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

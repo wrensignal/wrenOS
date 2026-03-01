@@ -1,0 +1,32 @@
+This project includes code from Agenti (https://github.com/nirholas/agenti)
+Copyright 2024-2025 nirholas
+Licensed under the Apache License 2.0
+
+Modifications by clawd/scout (agenti-main -> agenti-lite):
+
+1) Repository cleanup / footprint reduction
+- Removed non-runtime assets and docs/marketing/CI/test scaffolding from the lite fork
+  (e.g., .github, docs, tests, docker/deploy extras, images, branding files, README/meta docs).
+- Kept runtime-focused structure for research operation: src, dist, config, scripts, package files, ts config.
+
+2) Tool surface reshaping for research use
+- Removed alert tools module (src/modules/alerts).
+- Removed portfolio tools module (src/modules/portfolio).
+- Removed server_clear_cache tool.
+- Removed simulate_transaction tool registrations.
+- Restored selected workflow helpers for research quality:
+  prompt_list, prompt_get, prompt_generate, prompt_quick, prompt_build_custom,
+  research_create_plan, research_update_section, research_add_note, research_export.
+
+3) Server startup and tool-registry behavior fixes
+- Reworked server_list_tools to derive advertised tools from actual registered handlers
+  (dynamic registry-based listing instead of stale static catalog).
+- Added startup-time registry validation to fail fast on catalog/handler mismatch.
+- Added validation script: scripts/validate_server_list_tools.mjs.
+
+4) Server wiring and safety-mode changes
+- Updated module registration in src/evm.ts to reflect lite toolset.
+- Added/kept Rook-focused startup guardrails and allowlist hooks in server bootstrap paths.
+
+5) Resulting operational state
+- Callable research tool inventory targeted to 329 tools after lite pruning + selective restores.

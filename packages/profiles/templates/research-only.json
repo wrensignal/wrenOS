@@ -1,0 +1,16 @@
+{
+  "profile": "research-only",
+  "liveExecution": false,
+  "loop": {
+    "enabled": true,
+    "heartbeatAdaptive": true,
+    "tradeExecution": false
+  },
+  "dataSources": {
+    "walletFlow": true,
+    "birdeye": true,
+    "lunar": true,
+    "dexscreener": true,
+    "agentiLiteFallback": true
+  }
+}
