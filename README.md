@@ -38,4 +38,9 @@ node packages/cli/src/index.mjs status
     - `typescript` (`--omit=dev`): 1 moderate
   - Status: **allowed for dev/test only** until vulnerabilities are reduced.
 
-> Note: `crypto-news-lite` was requested for onboarding but is not present in this workspace yet, so it has not been vendored in this commit.
+- `vendor/crypto-news-lite` (desktop source snapshot)
+  - Included for crypto-news ingestion + MCP serving experiments.
+  - Local audit summary (2026-03-03):
+    - `mcp` (`@nirholas/free-crypto-news-mcp@2.0.0`, `--omit=dev`): 2 high, 1 moderate, 1 low
+    - `scripts/archive` (`free-crypto-news-archive@2.0.0`, `--omit=dev`): 0
+  - Status: **allowed for dev/test only** until MCP dependency vulnerabilities are reduced.

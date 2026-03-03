@@ -1,0 +1,30 @@
+This project includes code from free-crypto-news (https://github.com/nirholas/free-crypto-news).
+Copyright 2024-2026 nirholas.
+Licensed under the Apache License 2.0.
+
+Modifications by clawd/scout (crypto-news -> crypto-news-lite):
+
+1) Repository simplification for research runtime
+- Removed large non-runtime surfaces (UI/site/mobile/widget/docs/localization/sdk/prompts and other app-facing artifacts).
+- Reduced project to MCP runtime + research-relevant data/pipelines.
+
+2) Runtime-focused structure retained
+- Kept MCP server runtime under `mcp/`.
+- Kept research data artifacts: `archive/`, `data/`, `.data/`.
+- Kept selected research scripts: archive/rag/enrichment/indexing utilities.
+
+3) Robustness improvements in MCP server
+- Updated `mcp/index.js` fetch handling to gracefully manage:
+  - non-200 HTTP responses,
+  - non-JSON content types,
+  - JSON parse failures,
+  returning structured MCP errors instead of hard parse failures.
+
+4) Operational cleanup
+- Introduced crypto-news-lite naming and runtime-first posture for OpenClaw research workflows.
+- Removed quarantined extraneous files/directories after verification.
+
+5) Validation outcome
+- MCP server remains functional with 48 tools available.
+- Core news/trending/analysis/whale/funding tools verified callable.
+- Some upstream-backed routes currently return 404 and are treated as degraded until endpoint mapping is fixed.
