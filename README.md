@@ -38,8 +38,9 @@ node packages/cli/src/index.mjs status
     - `typescript` (`--omit=dev`): 1 moderate
   - Status: **allowed for dev/test only** until vulnerabilities are reduced.
 
-- `vendor/crypto-news-lite` (desktop source snapshot)
+- `vendor/crypto-news-lite` (desktop source snapshot, code-only)
   - Included for crypto-news ingestion + MCP serving experiments.
+  - Historical archive payloads (`archive/**`, `.data/**`) are intentionally excluded from this repo to keep git lean.
   - Local audit summary (2026-03-03):
     - `mcp` (`@nirholas/free-crypto-news-mcp@2.0.0`, `--omit=dev`): 2 high, 1 moderate, 1 low
     - `scripts/archive` (`free-crypto-news-archive@2.0.0`, `--omit=dev`): 0
