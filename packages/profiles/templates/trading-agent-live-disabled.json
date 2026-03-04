@@ -23,5 +23,16 @@
       "codegen": "qwen3-coder-480b-a35b-instruct",
       "uncensored": "venice-uncensored"
     }
+  },
+  "execution": {
+    "adapter": "default",
+    "venues": {
+      "jupiter": {
+        "enabled": true
+      },
+      "pumpfun": {
+        "enabled": true
+      }
+    }
   }
 }
