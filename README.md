@@ -1,56 +1,96 @@
-# 0xclaw
+# 0xClaw
 
-`0xclaw` is a crypto agent compatibility kit for OpenClaw operators.
+0xClaw is a **crypto agent compatibility kit for OpenClaw**.
 
-## Goals
-- Safe-by-default crypto agent setup
-- Unified data + inference adapters
-- Heartbeat-ready strategy loop primitives
-- One-command operator UX
+Pick a profile, deploy fast, and get a working agent stack with safe defaults.
+
+## Product model (open + hosted)
+
+- **Open source (this repo):** CLI, profiles, adapters, loops, packs, examples
+- **Hosted default path:** pre-wired to Speakeasy inference + execution routing defaults
+
+You can fully self-host and override defaults. The hosted/recommended path is optimized for speed, reliability, and better out-of-box economics.
+
+## Default architecture
+
+- Inference default: `https://api.speakeasyrelay.com`
+- Model routing defaults:
+  - `research` → `deepseek-v3.2`
+  - `deep_think` → `qwen3-235b-a22b-thinking-2507`
+  - `codegen` → `qwen3-coder-480b-a35b-instruct`
+  - `uncensored` → `venice-uncensored`
+- Execution venues:
+  - Jupiter (referral-capable)
+  - pump.fun (direct bonding-curve path)
 
 ## Quick start
 
-### Option A — one-command install
+### Option A — one-command local install
+
 ```bash
 bash scripts/install.sh
 ```
 
 ### Option B — manual local setup
+
 ```bash
 npm install
-node packages/cli/src/index.mjs init --profile research-only
+node packages/cli/src/index.mjs init --profile research-agent
 node packages/cli/src/index.mjs doctor
 node packages/cli/src/index.mjs status
 ```
 
+## CLI highlights
+
+```bash
+# initialize profile
+0xclaw init --profile research-agent
+
+# set config overrides
+0xclaw config set inference.baseUrl https://my-inference.example.com
+0xclaw config set execution.venues.jupiter.referralAccount <pubkey>
+
+# wallet setup (generated or import)
+0xclaw wallet setup
+0xclaw wallet setup --private-key 0x...
+
+# connectivity checks
+0xclaw test inference
+0xclaw test execution
+```
+
+## One-click deploy (Railway)
+
+- Template config: `railway.json`
+- Deploy guide: `RAILWAY_DEPLOY.md`
+- Target flow: deploy → set env vars → connect Telegram → chat with agent in minutes
+
+## Telegram operator UX
+
+Supported commands:
+- `/status`
+- `/watchlist`
+- `/health`
+- `/trade <symbol>`
+- `/paper on|off`
+
+See `docs/telegram-integration.md`.
+
 ## Package map
+
 - `packages/core` — schemas, safety policy defaults, shared utilities
-- `packages/adapters` — market/social/sentiment + inference adapters
+- `packages/adapters` — inference/execution/telegram adapters + data-quality logic
 - `packages/loops` — heartbeat, regression, adaptive controller primitives
-- `packages/cli` — `init`, `doctor`, `start`, `status`
+- `packages/cli` — operator commands (`init`, `doctor`, `config`, `wallet`, `test`, etc.)
 - `packages/profiles` — starter OpenClaw profile templates
 
 ## Safety posture
+
 - Live execution disabled by default
 - Explicit approvals required for external side effects
 - Data-quality confidence tiers and fallback paths are mandatory
+- Paper mode is the default operating mode
 
 ## License
+
 Apache-2.0 (see `LICENSE`).
-
-## Vendored dependencies
-- `vendor/pump-fun-sdk-lite` (v1.28.0, MIT)
-  - Included for pump.fun/Solana integration experiments in private alpha.
-  - Local audit summary (2026-03-03):
-    - root (`--omit=dev`): 4 high
-    - `mcp-server` (`--omit=dev`): 3 high, 1 moderate, 1 low
-    - `typescript` (`--omit=dev`): 1 moderate
-  - Status: **allowed for dev/test only** until vulnerabilities are reduced.
-
-- `vendor/crypto-news-lite` (desktop source snapshot, code-only)
-  - Included for crypto-news ingestion + MCP serving experiments.
-  - Historical archive payloads (`archive/**`, `.data/**`) are intentionally excluded from this repo to keep git lean.
-  - Local audit summary (2026-03-03):
-    - `mcp` (`@nirholas/free-crypto-news-mcp@2.0.0`, `--omit=dev`): 2 high, 1 moderate, 1 low
-    - `scripts/archive` (`free-crypto-news-archive@2.0.0`, `--omit=dev`): 0
-  - Status: **allowed for dev/test only** until MCP dependency vulnerabilities are reduced.
