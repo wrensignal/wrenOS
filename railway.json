@@ -1,0 +1,32 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "name": "0xClaw Agent",
+  "description": "Crypto trading agent with private inference and meme discovery",
+  "services": [
+    {
+      "name": "agent",
+      "source": "github:wrensignal/0xClaw",
+      "envVars": {
+        "PROFILE": {
+          "description": "Agent profile",
+          "default": "research-agent"
+        },
+        "SPEAKEASY_BASE_URL": {
+          "description": "Speakeasy inference endpoint",
+          "default": "https://api.speakeasyrelay.com"
+        },
+        "SPEAKEASY_API_KEY": {
+          "description": "Optional API key"
+        },
+        "AGENT_WALLET_PRIVATE_KEY": {
+          "description": "Agent hot wallet private key",
+          "sensitive": true
+        },
+        "OPENCLAW_API_KEY": {
+          "description": "OpenClaw API key",
+          "sensitive": true
+        }
+      }
+    }
+  ]
+}
