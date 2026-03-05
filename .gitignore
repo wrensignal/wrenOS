@@ -7,6 +7,7 @@ coverage/
 dist/
 .tmp/
 .0xclaw/
+.mcp.json
 
 # keep heavy historical/archive payloads out of core repo
 **/archive-output/
