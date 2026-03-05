@@ -5,250 +5,206 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>0xClaw — Where agents trade Solana memecoins</title>
     <meta name="description" content="Get to first trade in 2 minutes. Private inference. Zero logs. Paper mode by default." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <style>
       :root {
-        --bg: #FFFFFF;
-        --surface: #F8F9FB;
-        --text: #1F1D1D;
-        --textMuted: #474645;
-        --primary: #2EBAC6;
-        --accent: #8A7CFF;
-        --border: #E8EAEE;
+        --bg: rgb(9, 9, 33);
+        --text: rgb(242, 244, 250);
+        --muted: rgba(242, 244, 250, 0.74);
+        --surface: rgba(20, 24, 56, 0.72);
+        --surface-2: rgba(24, 31, 78, 0.7);
+        --border: rgba(242, 244, 250, 0.16);
+        --border-strong: rgba(138, 124, 255, 0.55);
+        --accent: rgb(138, 124, 255);
+        --teal: #2EBAC6;
 
-        --font-body: Inter, -apple-system, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        --font-display: 'FT Regola Neue', Inter, -apple-system, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-
-        --h1: clamp(44px, 5vw, 64px);
-        --h2: clamp(32px, 3.6vw, 48px);
-        --h3: clamp(24px, 2.4vw, 32px);
-        --body: 18px;
-        --small: 14px;
-
-        --regular: 400;
-        --medium: 500;
-        --semibold: 600;
-
-        --lh-display: 1.08;
-        --lh-heading: 1.16;
-        --lh-body: 1.5;
-        --lh-small: 1.4;
-
-        --base: 8px;
-        --sectionY: 96px;
-        --sectionX: 24px;
-        --componentGap: 24px;
-        --stackGap: 16px;
-        --cardPad: 24px;
-
-        --radius-sm: 8px;
-        --radius-md: 16px;
-        --radius-pill: 999px;
-
-        --shadow-card: 0 8px 24px rgba(31,29,29,0.06);
-        --shadow-hover: 0 12px 28px rgba(31,29,29,0.10);
-        --focus-ring: 0 0 0 3px rgba(46,186,198,0.28);
-
-        --maxWidth: 1200px;
-        --navH: 88px;
+        --max: 1200px;
+        --px: 24px;
+        --py: 96px;
+        --gap: 24px;
+        --stack: 16px;
+        --radius: 14px;
       }
 
       * { box-sizing: border-box; }
-      html, body { margin: 0; padding: 0; }
+      html, body { margin: 0; }
       body {
-        font-family: var(--font-body);
-        font-size: var(--body);
-        line-height: var(--lh-body);
-        font-weight: var(--regular);
+        font-family: "DM Sans", system-ui, sans-serif;
+        background: radial-gradient(900px 420px at 70% -15%, rgba(138,124,255,.32), transparent 70%), var(--bg);
         color: var(--text);
-        background: var(--bg);
       }
       a { color: inherit; text-decoration: none; }
-
       .container {
-        width: min(var(--maxWidth), 100%);
+        width: min(var(--max), 100%);
         margin-inline: auto;
-        padding-inline: var(--sectionX);
+        padding-inline: var(--px);
       }
 
       .nav {
+        height: 62px;
+        border-bottom: 1px solid var(--border);
+        background: rgba(9, 9, 33, .78);
+        backdrop-filter: blur(8px);
         position: sticky;
         top: 0;
-        z-index: 20;
-        background: var(--bg);
-        border-bottom: 1px solid var(--border);
+        z-index: 30;
       }
       .nav-inner {
-        height: var(--navH);
+        height: 62px;
         display: flex;
         align-items: center;
         justify-content: space-between;
       }
-      .brand {
-        font-family: var(--font-display);
-        font-weight: var(--semibold);
-      }
-      .nav-links {
-        display: flex;
-        align-items: center;
-        gap: var(--stackGap);
-        font-size: var(--small);
-        color: var(--textMuted);
-      }
+      .nav-links { display: flex; gap: 16px; color: var(--muted); font-size: 14px; }
 
-      .btn {
-        min-height: calc(var(--base) * 5);
-        padding: 0 calc(var(--base) * 2);
-        border: 1px solid transparent;
-        border-radius: var(--radius-pill);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: var(--small);
-        font-weight: var(--semibold);
-        transition: transform .18s ease, box-shadow .18s ease;
+      section { padding-block: var(--py); }
+      h1 {
+        margin: 0;
+        font-size: 60px;
+        line-height: 90px;
+        font-weight: 700;
+        max-width: 930px;
       }
-      .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-hover); }
-      .btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
-      .btn-primary { background: var(--primary); color: var(--bg); }
-      .btn-secondary { background: var(--surface); color: var(--text); border-color: var(--border); }
-
-      section { padding-block: var(--sectionY); }
-      h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: var(--semibold); color: var(--text); }
-      h1 { font-size: var(--h1); line-height: var(--lh-display); letter-spacing: -0.02em; max-width: 14ch; }
-      h2 { font-size: var(--h2); line-height: var(--lh-heading); letter-spacing: -0.015em; }
-      h3 { font-size: var(--h3); line-height: var(--lh-heading); }
-      p { margin: 0; color: var(--textMuted); }
+      h2 { margin: 0; font-size: 44px; line-height: 1.08; font-weight: 700; }
+      h3 { margin: 0; font-size: 24px; line-height: 1.16; font-weight: 700; }
+      p { margin: 0; color: var(--muted); }
 
       .hero {
-        background: linear-gradient(180deg, var(--bg), var(--surface));
+        padding-top: 112px;
+        padding-bottom: 84px;
+        border-bottom: 1px solid var(--border);
       }
       .hero-grid {
-        margin-top: var(--componentGap);
+        margin-top: 24px;
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: var(--componentGap);
+        grid-template-columns: 1.02fr .98fr;
+        gap: var(--gap);
         align-items: start;
       }
-      .badge-row {
-        display: flex;
-        gap: var(--base);
-        margin-bottom: var(--stackGap);
-      }
-      .badge {
-        min-height: calc(var(--base) * 3.5);
-        padding: 0 calc(var(--base) * 1.5);
-        border-radius: var(--radius-pill);
-        font-size: var(--small);
-        font-weight: var(--semibold);
+      .pill-row { display: flex; gap: 8px; margin-bottom: 16px; }
+      .pill {
+        min-height: 28px;
+        padding: 0 12px;
+        border-radius: 999px;
         border: 1px solid var(--border);
         display: inline-flex;
         align-items: center;
+        font-size: 12px;
+        font-weight: 700;
       }
-      .badge-agents { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-      .badge-native { background: var(--surface); color: var(--text); }
+      .pill-agents { background: #F2C94C; color: #1f1d1d; border-color: #F2C94C; }
+      .pill-new { background: rgba(138,124,255,.2); color: var(--text); border-color: var(--border-strong); }
 
       .card {
         background: var(--surface);
         border: 1px solid var(--border);
-        border-radius: var(--radius-md);
-        padding: var(--cardPad);
-        box-shadow: var(--shadow-card);
+        border-radius: var(--radius);
+        padding: 20px;
+        transition: box-shadow .2s ease, border-color .2s ease, transform .2s ease;
       }
-      .stack-16 { display: grid; gap: var(--stackGap); }
-      .stack-24 { display: grid; gap: var(--componentGap); }
+      .card:hover {
+        border-color: var(--border-strong);
+        box-shadow: 0 0 0 1px rgba(138,124,255,.2), 0 10px 30px rgba(9,9,33,.45);
+        transform: translateY(-1px);
+      }
 
-      .terminal-top {
-        min-height: calc(var(--base) * 4.5);
+      .hero-sub { margin-top: 12px; max-width: 70ch; }
+      .hero-note { margin-top: 4px; font-size: 14px; color: var(--text); }
+      .cta-row { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+      .btn {
+        min-height: 40px;
+        padding: 0 18px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.02);
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn:hover { border-color: var(--border-strong); box-shadow: 0 0 0 1px rgba(138,124,255,.2) inset; }
+
+      .term-top {
+        min-height: 36px;
         border-bottom: 1px solid var(--border);
-        font-size: var(--small);
-        color: var(--textMuted);
-        padding: calc(var(--base)) calc(var(--base) * 1.5);
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        font-size: 12px;
+        color: var(--muted);
       }
+      .dots { display: flex; gap: 6px; }
+      .dot { width: 9px; height: 9px; border-radius: 50%; }
+      .dot.r { background: #FF5F56; }
+      .dot.y { background: #FFBD2E; }
+      .dot.g { background: #27C93F; }
+      .mcp { border: 1px solid var(--border-strong); border-radius: 999px; padding: 2px 8px; color: var(--text); }
       pre {
         margin: 0;
-        font-size: var(--small);
-        line-height: var(--lh-small);
-        color: var(--text);
-        padding: calc(var(--base) * 1.5);
-        overflow: auto;
+        padding: 14px;
+        font-size: 13px;
+        line-height: 1.45;
+        color: #DBE3FF;
       }
 
-      .sub { margin-top: calc(var(--base) * 1.25); margin-bottom: calc(var(--base) * 3.5); max-width: 72ch; }
+      .option-row { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      .option {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+        background: var(--surface-2);
+        display: grid;
+        gap: 2px;
+      }
+      .option b { font-size: 13px; }
+      .option span { font-size: 12px; color: var(--muted); }
+      .works { margin-top: 12px; font-size: 13px; color: var(--muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+      .logo-pill { border: 1px solid var(--border); border-radius: 999px; padding: 3px 8px; font-size: 12px; }
 
-      .path-grid {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        gap: var(--componentGap);
-        align-items: stretch;
-      }
-      .path.recommended {
-        border-color: var(--primary);
-      }
-      .path .tag {
-        display: inline-flex;
-        margin-bottom: var(--stackGap);
-        font-size: var(--small);
-        font-weight: var(--semibold);
-        color: var(--primary);
-      }
-      .or {
-        width: calc(var(--base) * 9);
-        display: grid;
-        grid-template-rows: 1fr auto 1fr;
-        align-items: center;
-        justify-items: center;
-        color: var(--textMuted);
-        font-size: var(--small);
-      }
+      .sub { margin: 10px 0 24px; }
+
+      .path-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--gap); align-items: stretch; }
+      .recommended { border-color: var(--teal); box-shadow: 0 0 0 1px rgba(46,186,198,.22) inset; }
+      .muted-card { opacity: .86; }
+      .or { width: 72px; display: grid; grid-template-rows: 1fr auto 1fr; align-items: center; justify-items: center; color: var(--muted); font-size: 12px; }
       .or .line { width: 1px; height: 100%; background: var(--border); }
-      .also-works { margin-top: var(--componentGap); font-size: var(--small); color: var(--textMuted); }
 
-      .grid-3 {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: var(--componentGap);
-      }
-
-      .list {
-        border-top: 1px solid var(--border);
-        border-bottom: 1px solid var(--border);
-      }
+      .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--gap); }
+      .list { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
       .row {
-        min-height: calc(var(--base) * 11);
-        padding-block: calc(var(--base) * 1.25);
+        min-height: 84px;
         border-bottom: 1px solid var(--border);
         display: grid;
-        grid-template-columns: minmax(240px, 280px) 1fr;
-        gap: var(--componentGap);
+        grid-template-columns: minmax(250px, 290px) 1fr;
+        gap: var(--gap);
         align-items: center;
+        padding: 10px 0;
       }
       .row:last-child { border-bottom: 0; }
-      .row b { font-weight: var(--semibold); color: var(--text); font-size: calc(var(--small) + 1px); }
+      .row b { font-size: 15px; }
+
+      .tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--gap); }
+      .tool-card .count { font-size: 12px; color: var(--teal); margin-top: 4px; margin-bottom: 8px; font-weight: 700; letter-spacing: .04em; }
+      .tool-card p { font-size: 15px; line-height: 1.5; }
 
       .footer {
         border-top: 1px solid var(--border);
-        padding-block: calc(var(--base) * 6);
-        font-size: var(--small);
-        color: var(--textMuted);
+        padding: 48px 0;
+        font-size: 14px;
+        color: var(--muted);
       }
-      .footer-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--componentGap);
-        justify-content: space-between;
-      }
+      .footer-grid { display: flex; gap: 24px; flex-wrap: wrap; justify-content: space-between; }
 
       @media (max-width: 980px) {
-        section { padding-block: calc(var(--sectionY) - calc(var(--base) * 2)); }
-        .hero-grid, .grid-3, .path-grid { grid-template-columns: 1fr; }
-        .or {
-          width: 100%;
-          min-height: calc(var(--base) * 7);
-          grid-template-columns: 1fr auto 1fr;
-          grid-template-rows: none;
-        }
+        h1 { font-size: 44px; line-height: 1.12; }
+        section { padding-block: 72px; }
+        .hero-grid, .path-grid, .grid-3, .tool-grid, .option-row { grid-template-columns: 1fr; }
+        .or { width: 100%; min-height: 56px; grid-template-columns: 1fr auto 1fr; grid-template-rows: none; }
         .or .line { width: 100%; height: 1px; }
         .row { grid-template-columns: 1fr; min-height: auto; }
         .nav-links a:not(.btn) { display: none; }
@@ -258,35 +214,54 @@
   <body>
     <header class="nav">
       <div class="container nav-inner">
-        <a class="brand" href="#">0xClaw</a>
-        <nav class="nav-links" aria-label="Primary navigation">
+        <strong>0xClaw</strong>
+        <nav class="nav-links">
           <a href="#setup">Setup</a>
           <a href="#features">Features</a>
           <a href="#architecture">Architecture</a>
-          <a href="#packs">Packs</a>
-          <a href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer" class="btn btn-secondary">GitHub</a>
+          <a href="#tools">Tools</a>
+          <a href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">GitHub</a>
         </nav>
       </div>
     </header>
 
     <main>
-      <section class="hero" id="hero">
-        <div class="container stack-24">
+      <section class="hero">
+        <div class="container">
           <h1>Where agents come to trade Solana memecoins.</h1>
           <div class="hero-grid">
-            <div class="stack-16">
-              <div class="badge-row">
-                <span class="badge badge-agents">FOR AGENTS</span>
-                <span class="badge badge-native">OPENCLAW NATIVE</span>
+            <div>
+              <div class="pill-row">
+                <span class="pill pill-agents">⚡ For Agents</span>
+                <span class="pill pill-new">NEW</span>
               </div>
-              <p>Get to first trade in 2 minutes. Private inference. Zero logs. Paper mode by default.</p>
-              <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <a class="btn btn-primary" href="../README.md#quick-start">Set up your agent</a>
-                <a class="btn btn-secondary" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">View on GitHub</a>
+              <p class="hero-sub">Get to first trade in 2 minutes. Private inference. Zero logs. Paper mode by default.</p>
+              <p class="hero-note">Optimized for OpenClaw — the open agent framework.</p>
+              <div class="cta-row">
+                <a class="btn" href="../README.md#quick-start">🧠 Set up your agent</a>
+                <a class="btn" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">↗ View on GitHub</a>
+              </div>
+
+              <div class="option-row">
+                <a class="option" href="../RAILWAY_DEPLOY.md"><b>🚀 0xClaw + Railway</b><span>Easy · Safe · Recommended</span></a>
+                <a class="option" href="../README.md"><b>🧩 OpenClaw Self Hosted</b><span>Most advanced</span></a>
+              </div>
+
+              <div class="works">
+                <span>Also works with</span>
+                <span class="logo-pill">OpenClaw</span>
+                <span class="logo-pill">Telegram</span>
+                <span class="logo-pill">Railway</span>
+                <span class="logo-pill">Jupiter</span>
+                <span class="logo-pill">pump.fun</span>
               </div>
             </div>
-            <aside class="card" aria-label="Terminal preview">
-              <div class="terminal-top">terminal · quickstart</div>
+
+            <aside class="card">
+              <div class="term-top">
+                <span class="dots"><i class="dot r"></i><i class="dot y"></i><i class="dot g"></i></span>
+                <span class="mcp">MCP</span>
+              </div>
               <pre><code>$ bash scripts/install.sh
 [0xClaw] profile: research-agent
 [0xClaw] venues: jupiter, pump.fun
@@ -300,42 +275,29 @@
       <section id="setup">
         <div class="container">
           <h2>Get to first trade in 2 minutes</h2>
-          <p class="sub">Choose your deploy path.</p>
+          <p class="sub">Launch your agent with one click or self-host with full control.</p>
           <div class="path-grid">
-            <article class="card path recommended stack-16">
-              <div class="tag">RECOMMENDED</div>
+            <article class="card recommended">
               <h3>0xClaw + Railway</h3>
-              <p>One-click deploy, set env vars, connect Telegram, and start trading in minutes.</p>
-              <a class="btn btn-primary" href="../RAILWAY_DEPLOY.md">Start simple setup</a>
+              <p>One-click deploy, set env vars, connect Telegram, trading in minutes.</p>
             </article>
-            <div class="or" aria-hidden="true"><div class="line"></div>OR<div class="line"></div></div>
-            <article class="card path stack-16">
+            <div class="or"><div class="line"></div>OR<div class="line"></div></div>
+            <article class="card muted-card">
               <h3>Self-hosted</h3>
-              <p>Clone repo, npm install, init profile, and run with full control.</p>
-              <a class="btn btn-secondary" href="../README.md#quick-start">Learn self-hosted setup</a>
+              <p>Clone repo, npm install, init profile, full control.</p>
             </article>
           </div>
-          <p class="also-works">Also works with OpenClaw, Telegram, Railway, Jupiter, and pump.fun.</p>
+          <p class="sub" style="margin-top:24px; margin-bottom:0;">Also works with OpenClaw, Telegram, Railway, Jupiter, and pump.fun.</p>
         </div>
       </section>
 
       <section id="features">
         <div class="container">
           <h2>What you get</h2>
-          <p class="sub">A clean operator flow from deploy to execution.</p>
-          <div class="grid-3">
-            <article class="card stack-16">
-              <h3>Deploy</h3>
-              <p>One-click Railway or manual OpenClaw setup. Paper mode default.</p>
-            </article>
-            <article class="card stack-16">
-              <h3>Configure</h3>
-              <p>Wallet, model routing, MCP servers, confidence tiers. <code>0xclaw config set</code> for everything.</p>
-            </article>
-            <article class="card stack-16">
-              <h3>Trade</h3>
-              <p>Jupiter + pump.fun execution paths. Paper mode first, live when ready.</p>
-            </article>
+          <div class="grid-3" style="margin-top:24px;">
+            <article class="card"><h3>Deploy</h3><p>One-click Railway or manual OpenClaw setup. Paper mode default.</p></article>
+            <article class="card"><h3>Configure</h3><p>Wallet, model routing, MCP servers, confidence tiers. 0xclaw config set for everything.</p></article>
+            <article class="card"><h3>Trade</h3><p>Jupiter + pump.fun execution paths. Paper mode first, live when ready.</p></article>
           </div>
         </div>
       </section>
@@ -343,46 +305,26 @@
       <section id="architecture">
         <div class="container">
           <h2>Architecture / How it works</h2>
-          <p class="sub">Dual-agent control loop with private inference and explicit handoffs.</p>
-          <div class="list">
-            <div class="row"><b>Dual-agent architecture</b><span>Research agent (signal discovery) → Trading agent (strategy + execution).</span></div>
-            <div class="row"><b>Inference</b><span>Private models via Speakeasy: DeepSeek V3.2, Qwen3 Thinking, Qwen3 Coder, Venice Uncensored.</span></div>
-            <div class="row"><b>Data</b><span>Helius on-chain + agenti-lite + crypto-news-lite + pump.fun SDK.</span></div>
-            <div class="row"><b>Handoff</b><span>Research briefs flow from scout to trader via inbox contract.</span></div>
+          <div class="list" style="margin-top:24px;">
+            <div class="row"><b>Dual-agent architecture</b><span>Research agent (signal discovery) → Trading agent (strategy + execution)</span></div>
+            <div class="row"><b>Inference</b><span>Private models via Speakeasy (DeepSeek V3.2, Qwen3 Thinking, Qwen3 Coder, Venice Uncensored)</span></div>
+            <div class="row"><b>Data</b><span>Helius on-chain + agenti-lite + crypto-news-lite + pump.fun SDK</span></div>
+            <div class="row"><b>Handoff</b><span>Research briefs flow from scout to trader via inbox contract</span></div>
           </div>
         </div>
       </section>
 
-      <section id="packs">
+      <section id="tools">
         <div class="container">
-          <h2>Packs</h2>
-          <p class="sub">Prebuilt patterns for fast deployment.</p>
-          <div class="grid-3">
-            <article class="card stack-16">
-              <h3>Dual Agent Pack</h3>
-              <p>Research + trading agent with handoff schema, confidence tiers, and regression gates.</p>
-            </article>
-            <article class="card stack-16">
-              <h3>Meme Discovery Pack</h3>
-              <p>Scout + Rook in a box. Composite scoring across 7 signal dimensions. Zoo-style strategy management.</p>
-            </article>
-            <article class="card stack-16">
-              <h3>Build your own</h3>
-              <p>Open framework, any pack structure, any signal source.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="safety">
-        <div class="container">
-          <h2>Safety / Trust</h2>
-          <div class="list">
-            <div class="row"><b>Live execution</b><span>OFF by default.</span></div>
-            <div class="row"><b>Paper mode</b><span>Default operating mode.</span></div>
-            <div class="row"><b>Confidence tiers</b><span>Tier 0–3 fallbacks with automatic degradation.</span></div>
-            <div class="row"><b>Operator approval</b><span>Explicit approval required for live trading.</span></div>
-            <div class="row"><b>Open source</b><span>Inspect everything.</span></div>
+          <h2>Tools & capability categories</h2>
+          <p class="sub">Built like Senpi’s toolkit cards, mapped to 0xClaw primitives.</p>
+          <div class="tool-grid">
+            <article class="card tool-card"><h3>🧭 Meme Discovery Engine</h3><div class="count">7 signal dimensions</div><p>Composite scoring across wallet flow, liquidity, volume momentum, social velocity, holder distribution, news catalysts, and contract safety.</p></article>
+            <article class="card tool-card"><h3>⚡ Execution Adapters</h3><div class="count">2 venues</div><p>Jupiter (referral-capable) + pump.fun (direct bonding curve). Paper mode default, live when ready.</p></article>
+            <article class="card tool-card"><h3>🧠 Inference Routing</h3><div class="count">4 models</div><p>DeepSeek V3.2, Qwen3 Thinking, Qwen3 Coder, Venice Uncensored. Private inference, zero logs.</p></article>
+            <article class="card tool-card"><h3>🔧 Data & MCP Servers</h3><div class="count">3 servers</div><p>agenti-lite (universal crypto MCP), pump-fun-sdk-lite (bonding curve data), Helius (on-chain Solana data).</p></article>
+            <article class="card tool-card"><h3>📦 Agent Packs</h3><div class="count">2 packs</div><p>Dual Agent Pack (research → trading handoff), Meme Discovery Pack (Scout + Rook in a box).</p></article>
+            <article class="card tool-card"><h3>🛡️ Safety & Risk</h3><div class="count">4 tiers</div><p>Confidence tier system (normal → reweight → safe mode → hold/observe), regression gates, drawdown limits, explicit approvals.</p></article>
           </div>
         </div>
       </section>
