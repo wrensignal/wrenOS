@@ -115,12 +115,12 @@ async function cmdInitPack() {
       agents: {
         researchAgent: {
           name: arg('--research-name', 'meme-research-agent'),
-          role: 'scout',
+          role: 'research',
           config: research
         },
         tradingAgent: {
           name: arg('--trading-name', 'meme-trading-agent'),
-          role: 'rook',
+          role: 'trading',
           config: trading
         }
       },

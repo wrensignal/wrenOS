@@ -1,6 +1,8 @@
 # Meme Discovery Pack (`meme-discovery`)
 
-Rook + Scout in a box.
+Dual-agent meme discovery in a box.
+
+(Architecture: research agent + trading agent. Internally this pattern originated as “Scout + Rook”.)
 
 One-command init:
 
