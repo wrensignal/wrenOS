@@ -1,86 +1,195 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>0xClaw — Solana Meme Trading Toolkit</title>
-    <meta name="description" content="Set up your Solana meme trading agent in minutes. Simple path or open source path." />
+    <meta name="description" content="Set up your Solana meme trading agent in minutes. Choose simple Railway deploy or open-source OpenClaw integration." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap" rel="stylesheet" />
     <style>
       :root {
-        --bg: #fcfcfb;
-        --surface: #ffffff;
-        --ink: #202124;
-        --muted: #62656d;
-        --line: #e8e9ed;
-        --line-strong: #d6d9df;
-        --brand: #6f72ff;
-        --brand-dark: #5458e9;
-
+        --bg: oklch(0.13 0.03 262);
+        --bg-elev: oklch(0.18 0.03 262);
+        --surface: oklch(0.2 0.03 260 / 0.72);
+        --surface-2: oklch(0.23 0.035 255 / 0.68);
+        --ink: oklch(0.96 0.01 260);
+        --muted: oklch(0.77 0.02 256);
+        --line: oklch(0.36 0.04 255 / 0.6);
+        --line-strong: oklch(0.48 0.05 250 / 0.7);
+        --brand: oklch(0.74 0.16 256);
+        --brand-2: oklch(0.72 0.15 204);
         --btn-sm: 32px;
         --btn-md: 40px;
         --btn-lg: 56px;
-        --r-pill: 999px;
-        --r-card: 20px;
       }
 
       * { box-sizing: border-box; }
       html, body { margin: 0; }
-      body { font-family: Manrope, system-ui, sans-serif; background: var(--bg); color: var(--ink); }
+      body {
+        font-family: Manrope, system-ui, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(1000px 500px at 90% -10%, oklch(0.42 0.14 292 / 0.28), transparent 70%),
+          radial-gradient(700px 420px at 5% 0%, oklch(0.43 0.13 210 / 0.22), transparent 65%),
+          linear-gradient(180deg, var(--bg), oklch(0.1 0.02 262));
+      }
+
       a { color: inherit; text-decoration: none; }
-      .wrap { width: min(1080px, calc(100% - 2rem)); margin: 0 auto; }
+      .wrap { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; }
 
-      .nav { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 92%, white 8%); border-bottom: 1px solid var(--line); }
-      .nav-inner { min-height: 78px; display: flex; align-items: center; justify-content: space-between; }
-      .brand { font-family: Newsreader, serif; font-size: 1.15rem; }
-      .nav-links { display: flex; gap: 1rem; align-items: center; color: var(--muted); font-size: .92rem; }
+      .nav {
+        position: sticky; top: 0; z-index: 20;
+        backdrop-filter: blur(10px);
+        background: oklch(0.13 0.03 262 / 0.78);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-inner {
+        min-height: 76px;
+        display: flex; align-items: center; justify-content: space-between;
+      }
+      .brand { font-family: Newsreader, serif; font-size: 1.18rem; letter-spacing: -0.02em; }
+      .nav-links { display: flex; align-items: center; gap: 1rem; color: var(--muted); font-size: 0.92rem; }
 
-      .btn { display: inline-flex; align-items: center; justify-content: center; border-radius: var(--r-pill); border: 1px solid transparent; font-weight: 700; padding: 0 1.2rem; }
-      .btn-sm { min-height: var(--btn-sm); font-size: .85rem; }
-      .btn-md { min-height: var(--btn-md); font-size: .88rem; }
-      .btn-lg { min-height: var(--btn-lg); font-size: .95rem; padding: 0 1.5rem; }
-      .btn-primary { background: linear-gradient(120deg, var(--brand), #8594ff); color: #fff; }
-      .btn-primary:hover { background: var(--brand-dark); }
-      .btn-soft { background: var(--surface); border-color: var(--line-strong); color: var(--ink); }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        border-radius: 999px; border: 1px solid transparent;
+        font-weight: 700; transition: 180ms ease;
+      }
+      .btn:hover { transform: translateY(-1px); }
+      .btn-sm { min-height: var(--btn-sm); padding: 0 0.95rem; font-size: .84rem; }
+      .btn-md { min-height: var(--btn-md); padding: 0 1.1rem; font-size: .87rem; }
+      .btn-lg { min-height: var(--btn-lg); padding: 0 1.5rem; font-size: .95rem; }
+      .btn-primary { background: linear-gradient(120deg, var(--brand), var(--brand-2)); color: oklch(0.16 0.02 262); }
+      .btn-soft { background: oklch(0.22 0.03 260 / 0.45); border-color: var(--line); }
+      .btn-ghost { background: transparent; border-color: var(--line-strong); color: var(--muted); }
 
-      .hero { padding: clamp(4.5rem, 9vw, 7rem) 0 3rem; }
-      .kicker { text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-size: .8rem; }
-      h1 { margin: .8rem 0; font-family: Newsreader, serif; font-size: clamp(2.6rem, 6vw, 5rem); line-height: .98; max-width: 11ch; }
-      .hero p { margin: 0; color: var(--muted); font-size: 1.03rem; line-height: 1.7; max-width: 58ch; }
+      .hero { padding: clamp(4.2rem, 8vw, 7rem) 0 2.7rem; }
+      .hero-grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: 1rem; align-items: stretch; }
+      .kicker {
+        display: inline-flex; text-transform: uppercase; letter-spacing: .07em;
+        color: var(--muted); font-size: .77rem;
+      }
+      h1 {
+        margin: .8rem 0 .7rem;
+        font-family: Newsreader, serif;
+        font-size: clamp(2.5rem, 6vw, 5.1rem);
+        line-height: .95; letter-spacing: -0.02em; max-width: 11ch;
+      }
+      .hero p { margin: 0; color: var(--muted); max-width: 58ch; line-height: 1.7; }
       .hero-actions { margin-top: 1.35rem; display: flex; gap: .8rem; flex-wrap: wrap; }
 
-      section { padding: 1.5rem 0 2.5rem; }
-      h2 { margin: 0; font-family: Newsreader, serif; font-size: clamp(1.55rem, 3vw, 2.35rem); }
-      .sub { margin: .38rem 0 1.2rem; color: var(--muted); }
+      .hero-panel {
+        border: 1px solid var(--line);
+        background: linear-gradient(165deg, var(--surface), var(--surface-2));
+        border-radius: 24px;
+        padding: 1.1rem;
+        display: grid;
+        align-content: space-between;
+      }
+      .hero-panel h3 { margin: .35rem 0; font-size: 1.04rem; }
+      .hero-panel p { margin: 0; color: var(--muted); font-size: .9rem; }
+      .pill {
+        width: fit-content;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        padding: .27rem .58rem;
+        font-size: .72rem;
+        color: var(--muted);
+      }
+      .quick-grid {
+        margin-top: .8rem;
+        display: grid;
+        grid-template-columns: repeat(3,minmax(0,1fr));
+        gap: .5rem;
+      }
+      .quick-grid div {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: .6rem;
+      }
+      .quick-grid b { display: block; color: var(--muted); font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .15rem; }
+      .quick-grid span { font-size: .86rem; }
 
-      .setup { border: 1px solid var(--line); border-radius: 28px; overflow: hidden; background: var(--surface); }
-      .setup-grid { display: grid; grid-template-columns: 1fr 84px 1fr; }
-      .path { padding: 1.5rem; min-height: 230px; }
-      .path h3 { margin: .55rem 0 .35rem; font-size: 1.13rem; }
+      section { padding: 1.25rem 0 2.25rem; }
+      h2 { margin: 0; font-family: Newsreader, serif; font-size: clamp(1.55rem, 3vw, 2.35rem); }
+      .sub { margin: .34rem 0 1rem; color: var(--muted); }
+
+      .setup-shell {
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        overflow: hidden;
+        background: linear-gradient(160deg, var(--surface), oklch(0.16 0.02 260 / 0.8));
+      }
+      .setup-grid { display: grid; grid-template-columns: 1fr 88px 1fr; }
+      .path { padding: 1.4rem; min-height: 240px; }
+      .path h3 { margin: .5rem 0 .3rem; font-size: 1.14rem; }
       .path p { margin: 0; color: var(--muted); }
-      .path .micro { margin-top: .85rem; color: var(--muted); font-size: .82rem; }
-      .recommended { border-right: 1px solid var(--line); }
-      .open-source { border-left: 1px solid var(--line); background: #fafafa; }
-      .tag { color: var(--brand); text-transform: uppercase; letter-spacing: .06em; font-size: .78rem; font-weight: 800; }
-      .or { display: grid; grid-template-rows: 1fr auto 1fr; align-items: center; justify-items: center; color: var(--muted); font-size: .75rem; letter-spacing: .08em; }
+      .micro { margin-top: .78rem; font-size: .8rem; color: var(--muted); }
+      .path.recommended { border-right: 1px solid var(--line); }
+      .path.alt { border-left: 1px solid var(--line); opacity: .86; }
+      .tag { color: var(--ink); background: linear-gradient(120deg, var(--brand), var(--brand-2)); border-radius: 999px; width: fit-content; padding: .28rem .62rem; font-size: .73rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+      .or {
+        display: grid; grid-template-rows: 1fr auto 1fr;
+        align-items: center; justify-items: center;
+        color: var(--muted); font-size: .73rem; letter-spacing: .09em;
+      }
       .or .line { width: 1px; height: 100%; background: linear-gradient(180deg, transparent, var(--line-strong), transparent); }
 
-      .list-block { border-top: 1px solid var(--line); margin-top: .8rem; }
-      .row { min-height: 66px; display: grid; grid-template-columns: 230px 1fr; gap: 1rem; align-items: center; border-bottom: 1px solid var(--line); }
-      .row b { font-size: .94rem; }
-      .row span { color: var(--muted); font-size: .92rem; }
+      .senpi-section {
+        border-top: 1px solid var(--line);
+        padding-top: 1.2rem;
+      }
+      .grid { display: grid; gap: .8rem; }
+      .g-tools { grid-template-columns: repeat(4,minmax(0,1fr)); }
+      .g-skills { grid-template-columns: repeat(3,minmax(0,1fr)); }
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface);
+        padding: .95rem;
+      }
+      .card h3 { margin: 0 0 .35rem; font-size: .96rem; }
+      .card p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.48; }
 
-      .cta { margin-top: 2.2rem; padding-top: 2rem; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-      footer { padding: 2.2rem 0 2.8rem; color: var(--muted); font-size: .86rem; }
+      .install-row {
+        margin-top: 1rem;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: oklch(0.16 0.02 260 / 0.75);
+        padding: .7rem .85rem;
+        font-size: .85rem;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+        gap: .8rem;
+        flex-wrap: wrap;
+      }
 
-      @media (max-width: 940px) {
+      .final-cta {
+        margin-top: 1.9rem;
+        border-top: 1px solid var(--line);
+        padding-top: 1.6rem;
+        display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+      }
+
+      footer { padding: 2rem 0 2.5rem; color: var(--muted); font-size: .86rem; }
+
+      @media (max-width: 980px) {
+        .hero-grid, .g-tools, .g-skills { grid-template-columns: 1fr; }
         .setup-grid { grid-template-columns: 1fr; }
-        .or { min-height: 56px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); grid-template-columns: 1fr auto 1fr; grid-template-rows: none; gap: .6rem; }
+        .or {
+          min-height: 56px;
+          border-top: 1px solid var(--line);
+          border-bottom: 1px solid var(--line);
+          grid-template-columns: 1fr auto 1fr;
+          grid-template-rows: none;
+          gap: .6rem;
+        }
         .or .line { width: 100%; height: 1px; }
-        .recommended,.open-source { border: 0; }
-        .row { grid-template-columns: 1fr; min-height: auto; padding: .8rem 0; gap: .2rem; }
+        .path.recommended, .path.alt { border: 0; }
+        .quick-grid { grid-template-columns: 1fr; }
         .nav-links a:not(.btn) { display: none; }
       }
     </style>
@@ -88,12 +197,11 @@
   <body>
     <header class="nav">
       <div class="wrap nav-inner">
-        <a class="brand" href="#">0xClaw</a>
-        <nav class="nav-links">
+        <a href="#" class="brand">0xClaw</a>
+        <nav class="nav-links" aria-label="Primary">
           <a href="#setup">Setup</a>
           <a href="#tools">Tools</a>
           <a href="#skills">Skills</a>
-          <a class="btn btn-sm btn-soft" href="dark.html">Dark preview</a>
           <a class="btn btn-sm btn-soft" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">GitHub</a>
         </nav>
       </div>
@@ -101,72 +209,107 @@
 
     <main>
       <section class="hero">
-        <div class="wrap">
-          <div class="kicker">Solana meme trading toolkit</div>
-          <h1>Set up your agent. Start trading.</h1>
-          <p>Simple path for speed. Open source path for full control.</p>
-          <div class="hero-actions">
-            <a class="btn btn-lg btn-primary" href="#setup">Set up your agent</a>
-            <a class="btn btn-lg btn-soft" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">View repository</a>
+        <div class="wrap hero-grid">
+          <div>
+            <span class="kicker">solana meme trading toolkit</span>
+            <h1>Set up your agent. Start trading.</h1>
+            <p>Simple path for speed. Open source path for full control. Built for chat operators, solo traders, and open-source builders.</p>
+            <div class="hero-actions">
+              <a class="btn btn-lg btn-primary" href="#setup">Set up your agent</a>
+              <a class="btn btn-lg btn-soft" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">View repository</a>
+            </div>
           </div>
+
+          <aside class="hero-panel" aria-label="Quick summary">
+            <div>
+              <span class="pill">live-ready defaults</span>
+              <h3>Aave/Family visual discipline. Senpi conversion flow.</h3>
+              <p>Minimal, dark, and conversion-forward — without losing clarity.</p>
+            </div>
+            <div class="quick-grid">
+              <div><b>Mode</b><span>Paper first</span></div>
+              <div><b>Deploy</b><span>Railway / OSS</span></div>
+              <div><b>Ops</b><span>Telegram-ready</span></div>
+            </div>
+          </aside>
         </div>
       </section>
 
       <section id="setup">
         <div class="wrap">
           <h2>Choose your path</h2>
-          <p class="sub">Both paths lead to the same 0xClaw stack.</p>
-          <div class="setup">
+          <p class="sub">Two paths. One destination.</p>
+
+          <div class="setup-shell">
             <div class="setup-grid">
               <article class="path recommended">
                 <div class="tag">Recommended</div>
                 <h3>Simple Path</h3>
                 <p>One-click Railway deploy.</p>
                 <div class="micro">Best for most users</div>
-                <div class="hero-actions" style="margin-top:1rem"><a class="btn btn-md btn-primary" href="../RAILWAY_DEPLOY.md">Start simple setup</a></div>
+                <div class="hero-actions" style="margin-top:1rem">
+                  <a class="btn btn-md btn-primary" href="../RAILWAY_DEPLOY.md">Start simple setup</a>
+                </div>
               </article>
-              <div class="or"><div class="line"></div>OR<div class="line"></div></div>
-              <article class="path open-source">
+
+              <div class="or" aria-hidden="true">
+                <div class="line"></div>
+                OR
+                <div class="line"></div>
+              </div>
+
+              <article class="path alt">
                 <h3>Open Source Path</h3>
                 <p>Manual OpenClaw integration.</p>
                 <div class="micro">More setup · more flexibility</div>
-                <div class="hero-actions" style="margin-top:1rem"><a class="btn btn-md btn-soft" href="../README.md">Learn more</a></div>
+                <div class="hero-actions" style="margin-top:1rem">
+                  <a class="btn btn-md btn-ghost" href="../README.md">Learn more</a>
+                </div>
               </article>
             </div>
           </div>
+
+          <div class="install-row">
+            <span><strong>Install (Humans):</strong> guided Railway deploy flow</span>
+            <span><strong>Install (Agents):</strong> OpenClaw integration + CLI quickstart</span>
+          </div>
         </div>
       </section>
 
-      <section id="tools">
+      <section id="tools" class="senpi-section">
         <div class="wrap">
           <h2>Tools</h2>
-          <p class="sub">Included in the stack.</p>
-          <div class="list-block">
-            <div class="row"><b>Jupiter</b><span>Swap routing and execution support.</span></div>
-            <div class="row"><b>pump.fun</b><span>Bonding-curve workflows.</span></div>
-            <div class="row"><b>Helius</b><span>Solana RPC and indexed data pathing.</span></div>
-            <div class="row"><b>Telegram</b><span>Operator commands in chat.</span></div>
-            <div class="row"><b>Speakeasy</b><span>Default inference endpoint.</span></div>
-            <div class="row"><b>CLI + MCP tooling</b><span>init, config, wallet, doctor, test and interoperability layers.</span></div>
+          <p class="sub">Comprehensive stack, presented in Senpi-style compact modules.</p>
+          <div class="grid g-tools">
+            <article class="card"><h3>Jupiter</h3><p>Swap routing and execution support.</p></article>
+            <article class="card"><h3>pump.fun</h3><p>Bonding-curve launch and trade workflows.</p></article>
+            <article class="card"><h3>Helius</h3><p>Solana RPC and indexed data pathing.</p></article>
+            <article class="card"><h3>Telegram</h3><p>Operator commands and chat-driven control.</p></article>
+            <article class="card"><h3>Speakeasy</h3><p>Default inference endpoint routing.</p></article>
+            <article class="card"><h3>agenti-lite</h3><p>MCP interoperability and tool invocation.</p></article>
+            <article class="card"><h3>pump-fun-sdk-lite</h3><p>Execution-focused SDK integration layer.</p></article>
+            <article class="card"><h3>0xClaw CLI</h3><p>init, config, wallet, doctor, and test commands.</p></article>
           </div>
         </div>
       </section>
 
-      <section id="skills">
+      <section id="skills" class="senpi-section">
         <div class="wrap">
           <h2>Skills & packs</h2>
-          <p class="sub">Reusable behavior layers.</p>
-          <div class="list-block">
-            <div class="row"><b>Research Agent</b><span>Discovery and signal context gathering.</span></div>
-            <div class="row"><b>Solo Trader</b><span>Lean discretionary operating loop.</span></div>
-            <div class="row"><b>Dual Agent Pack</b><span>Split strategy and execution responsibilities.</span></div>
-            <div class="row"><b>Meme Discovery Pack</b><span>Meme opportunity detection flow.</span></div>
-            <div class="row"><b>Safety Policies</b><span>Paper mode defaults and approval gates.</span></div>
+          <p class="sub">Operator-ready capability packs with concise outcomes.</p>
+          <div class="grid g-skills">
+            <article class="card"><h3>Research Agent</h3><p>Discovery and market context collection.</p></article>
+            <article class="card"><h3>Solo Trader</h3><p>Lean discretionary strategy loop.</p></article>
+            <article class="card"><h3>Dual Agent Pack</h3><p>Split strategy and execution responsibilities.</p></article>
+            <article class="card"><h3>Meme Discovery Pack</h3><p>Meme opportunity detection and ranking.</p></article>
+            <article class="card"><h3>Safety Policies</h3><p>Paper defaults with explicit approval gates.</p></article>
+            <article class="card"><h3>Adaptive Loops</h3><p>Heartbeat and regression-aware controls.</p></article>
           </div>
-          <div class="cta">
+
+          <div class="final-cta">
             <div>
-              <h2 style="font-size:clamp(1.3rem,2.2vw,1.9rem)">Ready to run 0xClaw?</h2>
-              <p class="sub" style="margin:.25rem 0 0">Start simple, then expand into open source when needed.</p>
+              <h2 style="font-size:clamp(1.35rem,2.3vw,2rem)">Ready to run 0xClaw?</h2>
+              <p class="sub" style="margin:.25rem 0 0">Start simple. Expand into open source when needed.</p>
             </div>
             <div class="hero-actions" style="margin:0">
               <a class="btn btn-lg btn-primary" href="#setup">Start setup</a>
@@ -177,6 +320,8 @@
       </section>
     </main>
 
-    <footer><div class="wrap">0xClaw • Solana meme trading toolkit</div></footer>
+    <footer>
+      <div class="wrap">0xClaw • Solana meme trading toolkit • Open source first</div>
+    </footer>
   </body>
 </html>
