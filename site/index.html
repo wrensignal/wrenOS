@@ -22,7 +22,7 @@
 
         --btn-xs-h: 34px;  /* cookie/nav small in aave */
         --btn-sm-h: 40px;  /* primary content CTA in aave */
-        --btn-lg-h: 56px;  /* user-requested stronger hero control */
+        --btn-lg-h: 52px;  /* closer to Aave large CTA proportion */
 
         --radius-pill: 50px; /* aave standard */
         --radius-card: 16px;
@@ -61,6 +61,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        padding-inline: 2px;
       }
       .brand { font-weight: 600; letter-spacing: -.01em; }
       .nav-links { display: flex; gap: 1rem; align-items: center; color: var(--muted); font-size: 14px; }
@@ -76,8 +77,8 @@
       }
       .btn:hover { transform: translateY(-1px); }
       .btn-xs { min-height: var(--btn-xs-h); padding: 0 16px; font-size: 14px; }
-      .btn-sm { min-height: var(--btn-sm-h); padding: 0 16px; font-size: 16px; }
-      .btn-lg { min-height: var(--btn-lg-h); padding: 0 22px; font-size: 17px; }
+      .btn-sm { min-height: var(--btn-sm-h); padding: 0 18px; font-size: 16px; }
+      .btn-lg { min-height: var(--btn-lg-h); padding: 0 24px; font-size: 17px; }
 
       .btn-primary {
         background: #ffffff;
@@ -90,7 +91,7 @@
       }
 
       .hero {
-        padding: 84px 0 40px;
+        padding: 96px 0 44px;
       }
       .kicker {
         text-transform: uppercase;
@@ -99,7 +100,7 @@
         color: var(--muted);
       }
       h1 {
-        margin: 14px 0 14px;
+        margin: 16px 0 12px;
         font-size: clamp(40px, 6.2vw, var(--h1-size));
         line-height: 1.02;
         letter-spacing: -.02em;
@@ -113,14 +114,14 @@
         line-height: 1.65;
       }
       .actions {
-        margin-top: 22px;
+        margin-top: 24px;
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
       }
 
       section {
-        padding: 24px 0 32px;
+        padding: 28px 0 36px;
       }
       h2 {
         margin: 0;
