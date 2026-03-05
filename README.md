@@ -40,6 +40,36 @@ node packages/cli/src/index.mjs doctor
 node packages/cli/src/index.mjs status
 ```
 
+After `init`, a workspace-root `.mcp.json` is generated (if missing) with:
+- `agenti-lite`
+- `pump-fun-sdk-lite`
+- `helius` (placeholder API key)
+
+For Helius, create a free key at `https://dashboard.helius.dev` (no credit card), then set `HELIUS_API_KEY` in `.mcp.json`.
+
+## `speakeasy-ai` SDK (x402 handled internally)
+
+```bash
+npm install speakeasy-ai
+```
+
+```javascript
+import { SpeakeasyClient } from 'speakeasy-ai';
+
+const client = new SpeakeasyClient({
+  privateKey: process.env.AGENT_WALLET_PRIVATE_KEY,
+  // defaults to https://speakeasy.ing
+});
+
+const response = await client.chat.completions.create({
+  model: 'deepseek-v3.2',
+  messages: [{ role: 'user', content: 'Analyze this token...' }],
+  stream: true,
+});
+```
+
+`speakeasy-ai` handles x402 flow internally: request → 402 challenge → EIP-3009 signature → replay → response stream.
+
 ## CLI highlights
 
 ```bash
@@ -83,6 +113,7 @@ See `docs/telegram-integration.md`.
 - `packages/loops` — heartbeat, regression, adaptive controller primitives
 - `packages/cli` — operator commands (`init`, `doctor`, `config`, `wallet`, `test`, etc.)
 - `packages/profiles` — starter OpenClaw profile templates
+- Vendored MCP servers: `agenti-lite`, `pump-fun-sdk-lite`, `helius` (via `.mcp.json` template)
 
 ## Safety posture
 

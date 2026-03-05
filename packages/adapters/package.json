@@ -3,5 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "src/index.mjs"
+  "main": "src/index.mjs",
+  "dependencies": {
+    "speakeasy-ai": "0.1.0"
+  }
 }
