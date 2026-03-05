@@ -4,31 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>0xClaw — Solana Meme Trading Toolkit</title>
-    <meta
-      name="description"
-      content="Set up your Solana meme trading agent in minutes. Take the simple path with Railway or the open source path with full control."
-    />
+    <meta name="description" content="Set up your Solana meme trading agent in minutes with 0xClaw." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,700&family=IBM+Plex+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap" rel="stylesheet" />
     <style>
       :root {
-        --bg: oklch(0.985 0.004 250);
-        --surface: oklch(0.995 0.003 250);
-        --surface-2: oklch(0.975 0.006 250);
-        --ink: oklch(0.24 0.02 255);
-        --muted: oklch(0.54 0.015 255);
-        --line: oklch(0.9 0.008 255);
-        --line-strong: oklch(0.83 0.012 255);
-        --accent: oklch(0.62 0.19 260);
-        --accent-2: oklch(0.68 0.14 205);
-        --gold: oklch(0.76 0.14 75);
-        --radius-lg: 28px;
-        --radius-md: 16px;
-        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        --bg: oklch(0.988 0.002 250);
+        --surface: oklch(0.996 0.002 250);
+        --ink: oklch(0.25 0.015 255);
+        --muted: oklch(0.54 0.01 255);
+        --line: oklch(0.9 0.005 255);
+        --line-strong: oklch(0.83 0.01 255);
+        --accent: oklch(0.58 0.2 264);
+        --accent-2: oklch(0.66 0.14 205);
       }
 
       * { box-sizing: border-box; }
@@ -36,229 +25,137 @@
       body {
         font-family: Manrope, system-ui, sans-serif;
         color: var(--ink);
-        background:
-          radial-gradient(80rem 30rem at 90% -10%, oklch(0.9 0.05 250 / 0.55), transparent 65%),
-          radial-gradient(60rem 24rem at -10% -15%, oklch(0.9 0.04 70 / 0.35), transparent 60%),
-          var(--bg);
+        background: var(--bg);
       }
 
       a { color: inherit; text-decoration: none; }
-      .wrap { width: min(1160px, calc(100% - 2rem)); margin: 0 auto; }
+      .wrap { width: min(1080px, calc(100% - 2rem)); margin: 0 auto; }
 
       .nav {
         position: sticky;
         top: 0;
-        z-index: 30;
-        backdrop-filter: blur(10px);
-        background: oklch(0.985 0.004 250 / 0.86);
+        z-index: 20;
+        background: color-mix(in oklab, var(--bg) 94%, white 6%);
         border-bottom: 1px solid var(--line);
       }
       .nav-inner {
-        min-height: 72px;
+        min-height: 78px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 1rem;
       }
       .brand {
         font-family: Newsreader, serif;
-        font-size: 1.2rem;
-        letter-spacing: -0.02em;
+        font-size: 1.16rem;
       }
       .nav-links {
         display: flex;
-        align-items: center;
         gap: 1rem;
+        align-items: center;
         color: var(--muted);
-        font-size: 0.92rem;
+        font-size: .92rem;
       }
 
       .btn {
-        min-height: 46px;
-        padding: 0.72rem 1.05rem;
+        min-height: 56px;
+        padding: 0 1.25rem;
         border-radius: 999px;
-        border: 1px solid transparent;
+        font-size: .9rem;
+        font-weight: 700;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-weight: 700;
-        font-size: 0.85rem;
-        transition: transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s var(--ease);
+        border: 1px solid transparent;
       }
-      .btn:hover { transform: translateY(-1px); }
       .btn-main {
-        color: white;
+        color: #fff;
         background: linear-gradient(120deg, var(--accent), var(--accent-2));
-        box-shadow: 0 10px 28px -16px oklch(0.62 0.19 260 / 0.5);
       }
       .btn-soft {
+        color: var(--ink);
         background: var(--surface);
         border-color: var(--line-strong);
-        color: var(--ink);
-      }
-      .btn-text {
-        border: 0;
-        color: var(--muted);
-        font-weight: 600;
       }
 
       .hero {
-        padding: clamp(3.8rem, 8vw, 6.6rem) 0 2.8rem;
-      }
-      .hero-grid {
-        display: grid;
-        grid-template-columns: 1.12fr 0.88fr;
-        gap: 1.2rem;
+        padding: clamp(4.8rem, 10vw, 7.6rem) 0 clamp(3rem, 7vw, 5rem);
       }
       .kicker {
-        display: inline-flex;
-        align-items: center;
-        border: 1px solid var(--line-strong);
-        border-radius: 999px;
-        padding: .35rem .72rem;
         color: var(--muted);
-        font-family: "IBM Plex Mono", monospace;
-        font-size: .72rem;
+        font-size: .82rem;
+        letter-spacing: .08em;
         text-transform: uppercase;
-        letter-spacing: .05em;
       }
       h1 {
-        margin: .9rem 0 .65rem;
+        margin: .8rem 0 .8rem;
         font-family: Newsreader, serif;
-        font-size: clamp(2.5rem, 5.7vw, 4.9rem);
+        font-size: clamp(2.7rem, 6vw, 5.2rem);
         line-height: .98;
-        letter-spacing: -0.03em;
-        max-width: 12ch;
+        letter-spacing: -0.02em;
+        max-width: 11ch;
       }
       .hero p {
         margin: 0;
         color: var(--muted);
-        font-size: 1.03rem;
-        line-height: 1.65;
         max-width: 58ch;
+        font-size: 1.05rem;
+        line-height: 1.7;
       }
       .hero-actions {
-        margin-top: 1.25rem;
+        margin-top: 1.4rem;
         display: flex;
-        gap: .7rem;
+        gap: .8rem;
         flex-wrap: wrap;
       }
 
-      .hero-panel {
-        border: 1px solid var(--line);
-        background: linear-gradient(165deg, var(--surface), var(--surface-2));
-        border-radius: var(--radius-lg);
-        padding: 1.15rem;
-        display: grid;
-        align-content: space-between;
-        min-height: 320px;
-      }
-      .hero-panel .meta {
-        display: grid;
-        gap: .55rem;
-      }
-      .chip {
-        border: 1px solid var(--line-strong);
-        border-radius: 999px;
-        padding: .25rem .6rem;
-        font-size: .73rem;
-        font-family: "IBM Plex Mono", monospace;
-        color: var(--muted);
-        width: fit-content;
-      }
-      .hero-panel h3 {
-        margin: .4rem 0;
-        font-size: 1.08rem;
-        line-height: 1.35;
-      }
-      .hero-panel p {
-        margin: 0;
-        color: var(--muted);
-        font-size: .93rem;
-      }
-      .hero-stats {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: .55rem;
-      }
-      .hero-stats article {
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: .65rem;
-      }
-      .hero-stats b {
-        font-size: .74rem;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: .05em;
-      }
-      .hero-stats span {
-        display: block;
-        margin-top: .2rem;
-        font-size: .92rem;
-      }
-
-      section { padding: 1.2rem 0; }
+      section { padding: 1.1rem 0 2.5rem; }
       h2 {
         margin: 0;
         font-family: Newsreader, serif;
-        font-size: clamp(1.45rem, 3.2vw, 2.5rem);
-        letter-spacing: -0.02em;
+        font-size: clamp(1.6rem, 3vw, 2.4rem);
       }
       .sub {
-        margin: .35rem 0 1.1rem;
+        margin: .35rem 0 1.2rem;
         color: var(--muted);
       }
 
       .setup {
-        margin-top: .45rem;
         border: 1px solid var(--line);
-        border-radius: 30px;
-        background: linear-gradient(160deg, var(--surface), var(--surface-2));
+        border-radius: 28px;
         overflow: hidden;
+        background: var(--surface);
       }
       .setup-grid {
         display: grid;
-        grid-template-columns: 1fr 72px 1fr;
+        grid-template-columns: 1fr 84px 1fr;
       }
       .path {
-        padding: 1.25rem;
-        min-height: 232px;
+        padding: 1.5rem;
+        min-height: 230px;
       }
-      .path h3 { margin: .45rem 0 .36rem; font-size: 1.12rem; }
+      .path h3 { margin: .55rem 0 .38rem; font-size: 1.16rem; }
       .path p { margin: 0; color: var(--muted); }
-      .path .micro {
-        margin-top: .7rem;
-        font-family: "IBM Plex Mono", monospace;
-        text-transform: uppercase;
-        letter-spacing: .05em;
-        font-size: .73rem;
+      .micro {
+        margin-top: .85rem;
         color: var(--muted);
+        font-size: .82rem;
       }
-      .recommended {
-        border-right: 1px solid var(--line);
-        background: linear-gradient(180deg, oklch(0.985 0.006 245), oklch(0.97 0.01 245));
-      }
-      .recommended .tag {
-        display: inline-flex;
-        font-family: "IBM Plex Mono", monospace;
-        text-transform: uppercase;
-        letter-spacing: .06em;
-        font-size: .72rem;
+      .recommended { border-right: 1px solid var(--line); }
+      .open-source { border-left: 1px solid var(--line); background: oklch(0.985 0.002 250); }
+      .tag {
         color: var(--accent);
-      }
-      .open-source {
-        border-left: 1px solid var(--line);
-        background: color-mix(in oklab, var(--surface-2) 88%, black 12%);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
       }
       .or {
         display: grid;
         grid-template-rows: 1fr auto 1fr;
-        justify-items: center;
         align-items: center;
+        justify-items: center;
         color: var(--muted);
-        font-family: "IBM Plex Mono", monospace;
-        font-size: .72rem;
+        font-size: .78rem;
         letter-spacing: .08em;
       }
       .or .line {
@@ -267,97 +164,51 @@
         background: linear-gradient(180deg, transparent, var(--line-strong), transparent);
       }
 
-      .cluster {
-        margin-top: 2rem;
-        display: grid;
-        gap: .9rem;
+      .list-block {
+        border-top: 1px solid var(--line);
+        margin-top: .8rem;
       }
-      .cluster-head {
+      .row {
+        min-height: 66px;
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 1rem;
+        align-items: center;
+        border-bottom: 1px solid var(--line);
+      }
+      .row b { font-size: .94rem; }
+      .row span { color: var(--muted); font-size: .93rem; }
+
+      .cta {
+        margin-top: 2.5rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--line);
         display: flex;
-        align-items: flex-end;
         justify-content: space-between;
         gap: 1rem;
-      }
-
-      .grid {
-        display: grid;
-        gap: .8rem;
-      }
-      .g-tools { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-      .g-skills { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-
-      .tile {
-        border: 1px solid var(--line);
-        border-radius: var(--radius-md);
-        background: var(--surface);
-        padding: .95rem;
-        transition: transform .2s var(--ease), border-color .2s var(--ease), box-shadow .2s var(--ease);
-      }
-      .tile:hover {
-        transform: translateY(-2px);
-        border-color: var(--line-strong);
-        box-shadow: 0 12px 26px -22px oklch(0.28 0.03 255 / 0.4);
-      }
-      .tile h3 { margin: 0 0 .34rem; font-size: .96rem; }
-      .tile p {
-        margin: 0;
-        color: var(--muted);
-        font-size: .89rem;
-        line-height: 1.45;
-      }
-
-      .install-terminal {
-        margin-top: 1rem;
-        border: 1px solid var(--line-strong);
-        border-radius: 16px;
-        background: oklch(0.99 0.003 250);
-        padding: .8rem;
-        font-family: "IBM Plex Mono", monospace;
-        font-size: .8rem;
-        color: oklch(0.36 0.02 255);
-        line-height: 1.6;
-      }
-
-      .final-cta {
-        margin-top: 2rem;
-        border: 1px solid var(--line);
-        border-radius: 26px;
-        background: linear-gradient(135deg, oklch(0.98 0.02 250), oklch(0.95 0.03 80));
-        padding: 1.2rem;
-        display: flex;
-        flex-wrap: wrap;
         align-items: center;
-        justify-content: space-between;
-        gap: .8rem;
+        flex-wrap: wrap;
       }
-      .final-cta h3 {
-        margin: 0;
-        font-family: Newsreader, serif;
-        font-size: 1.5rem;
-      }
-      .final-cta p { margin: .3rem 0 0; color: var(--muted); }
 
       footer {
-        padding: 2rem 0 2.6rem;
+        padding: 2.2rem 0 2.8rem;
         color: var(--muted);
         font-size: .86rem;
       }
 
-      @media (max-width: 1024px) {
-        .hero-grid,
-        .g-tools,
-        .g-skills { grid-template-columns: 1fr; }
+      @media (max-width: 940px) {
         .setup-grid { grid-template-columns: 1fr; }
         .or {
-          min-height: 58px;
+          min-height: 56px;
           border-top: 1px solid var(--line);
           border-bottom: 1px solid var(--line);
           grid-template-columns: 1fr auto 1fr;
           grid-template-rows: none;
-          gap: .65rem;
+          gap: .6rem;
         }
         .or .line { width: 100%; height: 1px; }
         .recommended, .open-source { border: 0; }
+        .row { grid-template-columns: 1fr; padding: .8rem 0; gap: .2rem; min-height: auto; }
         .nav-links a:not(.btn) { display: none; }
       }
     </style>
@@ -365,59 +216,40 @@
   <body>
     <header class="nav">
       <div class="wrap nav-inner">
-        <a href="#" class="brand">0xClaw</a>
+        <a class="brand" href="#">0xClaw</a>
         <nav class="nav-links" aria-label="Primary navigation">
           <a href="#setup">Setup</a>
           <a href="#tools">Tools</a>
           <a href="#skills">Skills</a>
-          <a class="btn btn-main" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="btn btn-soft" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">GitHub</a>
         </nav>
       </div>
     </header>
 
     <main>
       <section class="hero">
-        <div class="wrap hero-grid">
-          <div>
-            <span class="kicker">solana meme trading toolkit</span>
-            <h1>Set up your agent. Choose your lane.</h1>
-            <p>
-              Built for fast operators and deep builders. Take the simple one-click path,
-              or use the full open source stack with OpenClaw.
-            </p>
-            <div class="hero-actions">
-              <a class="btn btn-main" href="#setup">Set up your agent</a>
-              <a class="btn btn-soft" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">Explore repository</a>
-              <a class="btn btn-text" href="#tools">See stack →</a>
-            </div>
+        <div class="wrap">
+          <div class="kicker">Solana meme trading toolkit</div>
+          <h1>Set up your agent. Start trading.</h1>
+          <p>Simple path for speed. Open source path for full control.</p>
+          <div class="hero-actions">
+            <a class="btn btn-main" href="#setup">Set up your agent</a>
+            <a class="btn btn-soft" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">View repository</a>
           </div>
-
-          <aside class="hero-panel" aria-label="Quick profile panel">
-            <div class="meta">
-              <span class="chip">operator profile</span>
-              <h3>Designed like fintech UX, wired like protocol infrastructure.</h3>
-              <p>Clear defaults, explicit risk boundaries, composable adapters and packs.</p>
-            </div>
-            <div class="hero-stats">
-              <article><b>Mode</b><span>Paper by default</span></article>
-              <article><b>Deploy</b><span>Railway / OSS</span></article>
-              <article><b>Stack</b><span>CLI + adapters</span></article>
-            </div>
-          </aside>
         </div>
       </section>
 
       <section id="setup">
         <div class="wrap">
-          <h2>Set up your agent</h2>
-          <p class="sub">Two paths. One destination.</p>
+          <h2>Choose your path</h2>
+          <p class="sub">Both paths lead to the same 0xClaw stack.</p>
 
           <div class="setup">
             <div class="setup-grid">
               <article class="path recommended">
-                <div class="tag">● Recommended</div>
+                <div class="tag">Recommended</div>
                 <h3>Simple Path</h3>
-                <p>One-click Railway deploy with the fastest route to operations.</p>
+                <p>One-click Railway deploy.</p>
                 <div class="micro">Best for most users</div>
                 <div class="hero-actions" style="margin-top:1rem">
                   <a class="btn btn-main" href="../RAILWAY_DEPLOY.md">Start simple setup</a>
@@ -432,59 +264,48 @@
 
               <article class="path open-source">
                 <h3>Open Source Path</h3>
-                <p>Manual OpenClaw integration with maximum flexibility.</p>
-                <div class="micro">More control · more setup</div>
+                <p>Manual OpenClaw integration.</p>
+                <div class="micro">More setup · more flexibility</div>
                 <div class="hero-actions" style="margin-top:1rem">
                   <a class="btn btn-soft" href="../README.md">Learn more</a>
                 </div>
               </article>
             </div>
           </div>
-
-          <div class="install-terminal">npm install
-node packages/cli/src/index.mjs init --profile research-agent
-node packages/cli/src/index.mjs doctor</div>
         </div>
       </section>
 
-      <section class="cluster" id="tools">
+      <section id="tools">
         <div class="wrap">
-          <div class="cluster-head">
-            <div>
-              <h2>Tools</h2>
-              <p class="sub">Comprehensive stack for Solana meme execution and operator workflows.</p>
-            </div>
-          </div>
-          <div class="grid g-tools">
-            <article class="tile"><h3>Jupiter</h3><p>Swap routing and execution support.</p></article>
-            <article class="tile"><h3>pump.fun</h3><p>Direct bonding-curve trade flows.</p></article>
-            <article class="tile"><h3>Helius</h3><p>Solana RPC and indexed data pathing.</p></article>
-            <article class="tile"><h3>Telegram</h3><p>Operate status, health, and actions from chat.</p></article>
-            <article class="tile"><h3>Speakeasy</h3><p>Default inference routing endpoint.</p></article>
-            <article class="tile"><h3>agenti-lite</h3><p>MCP interoperability runtime.</p></article>
-            <article class="tile"><h3>pump-fun-sdk-lite</h3><p>Execution toolkit integration.</p></article>
-            <article class="tile"><h3>0xClaw CLI</h3><p>init, config, wallet, test, doctor.</p></article>
+          <h2>Tools</h2>
+          <p class="sub">Included in the stack.</p>
+          <div class="list-block">
+            <div class="row"><b>Jupiter</b><span>Swap routing and execution support.</span></div>
+            <div class="row"><b>pump.fun</b><span>Bonding-curve workflows.</span></div>
+            <div class="row"><b>Helius</b><span>Solana RPC and indexed data pathing.</span></div>
+            <div class="row"><b>Telegram</b><span>Operator commands in chat.</span></div>
+            <div class="row"><b>Speakeasy</b><span>Default inference endpoint.</span></div>
+            <div class="row"><b>CLI + MCP tooling</b><span>init, config, wallet, doctor, test and interoperability layers.</span></div>
           </div>
         </div>
       </section>
 
-      <section class="cluster" id="skills">
+      <section id="skills">
         <div class="wrap">
           <h2>Skills & packs</h2>
-          <p class="sub">Prebuilt behavior layers to launch faster and iterate safely.</p>
-          <div class="grid g-skills">
-            <article class="tile"><h3>Research Agent</h3><p>Discovery and signal context gathering.</p></article>
-            <article class="tile"><h3>Solo Trader</h3><p>Lean discretionary operating loop.</p></article>
-            <article class="tile"><h3>Dual Agent Pack</h3><p>Split strategy and execution across agents.</p></article>
-            <article class="tile"><h3>Meme Discovery Pack</h3><p>Meme opportunity scanning flow.</p></article>
-            <article class="tile"><h3>Safety Policies</h3><p>Paper defaults with explicit approvals.</p></article>
-            <article class="tile"><h3>Adaptive Loops</h3><p>Heartbeat and regression-aware controls.</p></article>
+          <p class="sub">Reusable behavior layers.</p>
+          <div class="list-block">
+            <div class="row"><b>Research Agent</b><span>Discovery and signal context gathering.</span></div>
+            <div class="row"><b>Solo Trader</b><span>Lean discretionary operating loop.</span></div>
+            <div class="row"><b>Dual Agent Pack</b><span>Split strategy and execution responsibilities.</span></div>
+            <div class="row"><b>Meme Discovery Pack</b><span>Meme opportunity detection flow.</span></div>
+            <div class="row"><b>Safety Policies</b><span>Paper mode defaults and approval gates.</span></div>
           </div>
 
-          <div class="final-cta">
+          <div class="cta">
             <div>
-              <h3>Ready to run 0xClaw?</h3>
-              <p>Start simple. Expand into full control when you want it.</p>
+              <h2 style="font-size:clamp(1.3rem,2.2vw,1.9rem)">Ready to run 0xClaw?</h2>
+              <p class="sub" style="margin:.25rem 0 0">Start simple, then expand into the open source path when needed.</p>
             </div>
             <div class="hero-actions" style="margin:0">
               <a class="btn btn-main" href="#setup">Start setup</a>
@@ -496,7 +317,7 @@ node packages/cli/src/index.mjs doctor</div>
     </main>
 
     <footer>
-      <div class="wrap">0xClaw • Solana meme trading toolkit • Open source first</div>
+      <div class="wrap">0xClaw • Solana meme trading toolkit</div>
     </footer>
   </body>
 </html>
