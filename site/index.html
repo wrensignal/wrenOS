@@ -158,8 +158,9 @@
       .tag {
         display: inline-block;
         position: absolute;
-        top: -11px;
-        left: 16px;
+        left: 50%;
+        bottom: -11px;
+        transform: translateX(-50%);
         padding: 2px 10px;
         border: 1px solid #5b67b9;
         border-radius: 999px;
@@ -168,6 +169,7 @@
         letter-spacing: .06em;
         text-transform: uppercase;
         color: #dbe2ff;
+        white-space: nowrap;
       }
       .or {
         display: grid;
@@ -296,14 +298,16 @@
       <section id="tools">
         <div class="wrap">
           <h2>Tools</h2>
-          <p class="sub">Everything in the kit.</p>
+          <p class="sub">Comprehensive stack based on the current 0xClaw repo.</p>
           <div class="list">
-            <div class="row"><b>Jupiter</b><span>Swap routing and execution support.</span></div>
-            <div class="row"><b>pump.fun</b><span>Bonding-curve workflows.</span></div>
-            <div class="row"><b>Helius</b><span>Solana RPC and indexed data pathing.</span></div>
-            <div class="row"><b>Telegram</b><span>Operator commands in chat.</span></div>
-            <div class="row"><b>Speakeasy</b><span>Default inference endpoint routing.</span></div>
-            <div class="row"><b>CLI + MCP tooling</b><span>init, config, wallet, doctor, test and interoperability layers.</span></div>
+            <div class="row"><b>pump-fun-sdk-lite MCP kit</b><span><strong>53 tools</strong> across wallet, quotes, lifecycle, AMM trading/liquidity, cashback, fee sharing, and analytics.</span></div>
+            <div class="row"><b>Jupiter venue adapter</b><span>Referral-capable routing for swap execution paths.</span></div>
+            <div class="row"><b>pump.fun execution venue</b><span>Direct bonding-curve execution path in default architecture.</span></div>
+            <div class="row"><b>Helius MCP server</b><span>RPC + indexed Solana data path (configured via generated `.mcp.json`).</span></div>
+            <div class="row"><b>agenti-lite MCP server</b><span>Tool interoperability layer included in local setup flow.</span></div>
+            <div class="row"><b>0xClaw CLI</b><span><strong>8+ command groups</strong>: `init`, `doctor`, `status`, `config`, `wallet`, `init-pack`, `test`, plus package scripts.</span></div>
+            <div class="row"><b>Telegram operator commands</b><span><strong>5 built-ins</strong>: `/status`, `/watchlist`, `/health`, `/trade`, `/paper`.</span></div>
+            <div class="row"><b>Speakeasy inference default</b><span>Hosted default base URL with model routing presets for research/deep-think/codegen/uncensored modes.</span></div>
           </div>
         </div>
       </section>
@@ -311,14 +315,14 @@
       <section id="skills">
         <div class="wrap">
           <h2>Skills & packs</h2>
-          <p class="sub">Prebuilt behavior layers.</p>
+          <p class="sub">Repository-backed capabilities and deployable packs.</p>
           <div class="list">
-            <div class="row"><b>Research Agent</b><span>Discovery and market context gathering.</span></div>
-            <div class="row"><b>Solo Trader</b><span>Lean discretionary operating loop.</span></div>
-            <div class="row"><b>Dual Agent Pack</b><span>Split strategy and execution responsibilities.</span></div>
-            <div class="row"><b>Meme Discovery Pack</b><span>Meme opportunity detection flow.</span></div>
-            <div class="row"><b>Safety Policies</b><span>Paper mode defaults and approval gates.</span></div>
-            <div class="row"><b>Adaptive Loops</b><span>Heartbeat and regression-aware controls.</span></div>
+            <div class="row"><b>Core packages</b><span><strong>6 package modules</strong>: `core`, `adapters`, `loops`, `cli`, `profiles`, and vendored MCP integrations.</span></div>
+            <div class="row"><b>Profile templates</b><span>Starter profile flow includes research-agent initialization and safe defaults.</span></div>
+            <div class="row"><b>Dual Agent Pack</b><span>Research + trading agent split with pack-specific AGENTS/HEARTBEAT configuration.</span></div>
+            <div class="row"><b>Meme Discovery Pack</b><span>Watchlist-oriented discovery workflow with handoff schema support.</span></div>
+            <div class="row"><b>Safety posture</b><span>Paper mode defaults, explicit external approval requirements, and data quality confidence tiers.</span></div>
+            <div class="row"><b>Adaptive loop primitives</b><span>Heartbeat, regression checks, and control-loop components from `packages/loops`.</span></div>
           </div>
 
           <div class="cta">
