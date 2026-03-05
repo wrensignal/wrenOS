@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>0xClaw — Autonomous Crypto Agent Infra</title>
+    <meta
+      name="description"
+      content="0xClaw is an open-source crypto compatibility kit for building autonomous agent workflows with safety rails, adapters, and extensible packs."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: oklch(0.13 0.03 265);
+        --bg-soft: oklch(0.18 0.03 265);
+        --card: oklch(0.2 0.03 265 / 0.72);
+        --text: oklch(0.97 0.01 260);
+        --muted: oklch(0.76 0.02 260);
+        --border: oklch(0.35 0.04 262 / 0.55);
+        --primary: oklch(0.74 0.19 250);
+        --primary-2: oklch(0.76 0.17 190);
+        --glow: oklch(0.74 0.19 250 / 0.42);
+        --radius: 1rem;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 12% 8%, oklch(0.35 0.19 285 / 0.22), transparent 34%),
+          radial-gradient(circle at 80% 10%, oklch(0.43 0.17 210 / 0.22), transparent 38%),
+          linear-gradient(180deg, var(--bg) 0%, oklch(0.11 0.02 265) 100%);
+        min-height: 100%;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .container {
+        width: min(1120px, calc(100% - 2rem));
+        margin: 0 auto;
+      }
+
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(14px);
+        background: oklch(0.12 0.02 265 / 0.72);
+        border-bottom: 1px solid oklch(0.32 0.03 260 / 0.45);
+      }
+
+      .nav-inner {
+        height: 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .brand {
+        font-weight: 800;
+        letter-spacing: 0.02em;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        border-radius: 0.8rem;
+        font-weight: 600;
+        padding: 0.75rem 1rem;
+        border: 1px solid transparent;
+        transition: transform 0.16s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn:active {
+        transform: translateY(0) scale(0.98);
+      }
+
+      .btn-primary {
+        background: linear-gradient(120deg, var(--primary), var(--primary-2));
+        color: oklch(0.16 0.02 265);
+        box-shadow: 0 0 0 1px oklch(1 0 0 / 0.08) inset, 0 8px 28px -8px var(--glow);
+      }
+
+      .btn-ghost {
+        border-color: var(--border);
+        background: oklch(0.2 0.03 265 / 0.35);
+      }
+
+      .hero {
+        padding: 5.8rem 0 4.2rem;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .badge {
+        display: inline-flex;
+        padding: 0.35rem 0.65rem;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      h1 {
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        margin: 1rem 0;
+      }
+
+      .hero p {
+        color: var(--muted);
+        max-width: 60ch;
+        font-size: 1.05rem;
+        line-height: 1.7;
+      }
+
+      .hero-actions {
+        margin-top: 1.6rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .panel {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--card);
+        box-shadow: 0 10px 50px -24px oklch(0 0 0 / 0.65);
+      }
+
+      .terminal {
+        overflow: hidden;
+      }
+
+      .terminal-top {
+        padding: 0.65rem 0.85rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      pre {
+        margin: 0;
+        padding: 1rem;
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.86rem;
+        color: oklch(0.93 0.02 260);
+        overflow: auto;
+      }
+
+      section {
+        padding: 2.25rem 0;
+      }
+
+      .section-title {
+        font-size: clamp(1.35rem, 3vw, 2rem);
+        margin: 0 0 0.5rem;
+      }
+
+      .section-copy {
+        margin: 0 0 1.2rem;
+        color: var(--muted);
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+      }
+
+      .card {
+        padding: 1.1rem;
+      }
+
+      .card h3 {
+        margin: 0 0 0.45rem;
+        font-size: 1rem;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+        font-size: 0.95rem;
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.9rem;
+      }
+
+      .flow .card {
+        position: relative;
+      }
+
+      .step {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.76rem;
+        color: var(--primary-2);
+      }
+
+      .final-cta {
+        text-align: center;
+        padding: 3rem 1rem;
+      }
+
+      footer {
+        padding: 1.6rem 0 2.2rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 980px) {
+        .hero-grid,
+        .grid-3,
+        .flow {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-links a:not(.btn) {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="#">0xClaw</a>
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="btn btn-primary" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">Get started</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <span class="badge">Open-source crypto compatibility kit</span>
+            <h1>Autonomous crypto agent infra, built with guardrails.</h1>
+            <p>
+              0xClaw helps you assemble agent workflows for research, execution, and integrations across crypto tooling.
+              Move faster with reusable packs, adapter-first architecture, and safety-aware defaults.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">View repository</a>
+              <a class="btn btn-ghost" href="../README.md">Read docs</a>
+            </div>
+          </div>
+          <aside class="panel terminal" aria-label="Terminal preview">
+            <div class="terminal-top">terminal — quickstart</div>
+            <pre><code>$ npm i
+$ node packages/cli/src/index.mjs
+
+[0xClaw] profile loaded: solo-trader
+[0xClaw] adapters online: dex, wallet, news
+[0xClaw] risk policy: paper/test mode
+[0xClaw] loop started ✅</code></pre>
+          </aside>
+        </div>
+      </section>
+
+      <section id="features">
+        <div class="container">
+          <h2 class="section-title">Why teams pick 0xClaw</h2>
+          <p class="section-copy">A practical base layer for building crypto-capable agents without reinventing reliability and safety each sprint.</p>
+          <div class="grid-3">
+            <article class="panel card">
+              <h3>Adapter-first architecture</h3>
+              <p>Integrate exchange, wallet, and intel providers through clean adapters so your agent logic stays portable.</p>
+            </article>
+            <article class="panel card">
+              <h3>Safety-aware profiles</h3>
+              <p>Start in paper mode, apply explicit limits, and design execution policies that reduce avoidable blast radius.</p>
+            </article>
+            <article class="panel card">
+              <h3>Pack ecosystem</h3>
+              <p>Ship with reusable packs and examples so you can prototype fast and evolve toward production architecture.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="how">
+        <div class="container">
+          <h2 class="section-title">How it works</h2>
+          <p class="section-copy">Three layers from local test loops to real integrations.</p>
+          <div class="flow">
+            <article class="panel card">
+              <div class="step">01 / Configure</div>
+              <h3>Choose a profile</h3>
+              <p>Pick a starting profile and define your strategy constraints, model routing, and execution permissions.</p>
+            </article>
+            <article class="panel card">
+              <div class="step">02 / Connect</div>
+              <h3>Attach adapters</h3>
+              <p>Wire in wallets, feeds, and venues through composable adapter interfaces with minimal coupling.</p>
+            </article>
+            <article class="panel card">
+              <div class="step">03 / Operate</div>
+              <h3>Run and iterate</h3>
+              <p>Launch loops, monitor outcomes, refine rules, and tighten risk controls as confidence grows.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="panel final-cta">
+            <h2 class="section-title">Build your 0xClaw stack in minutes.</h2>
+            <p class="section-copy">Clone it, run examples, then shape it into your own execution platform.</p>
+            <a class="btn btn-primary" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">Start with GitHub</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <span>© 0xClaw • Open-source infrastructure for autonomous crypto workflows</span>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -128,6 +128,14 @@ See `docs/telegram-integration.md`.
 - Data-quality confidence tiers and fallback paths are mandatory
 - Paper mode is the default operating mode
 
+## Landing page prototype
+
+A first-pass marketing site is available at:
+
+- `site/index.html`
+
+Open it locally in your browser to preview.
+
 ## License
 
 Apache-2.0 (see `LICENSE`).
