@@ -17,7 +17,7 @@
         --fontBody: 'DM Sans', system-ui, sans-serif;
         --fontDisplay: 'Libre Baskerville', Georgia, serif;
 
-        --h1: clamp(44px, 5vw, 64px);
+        --h1: clamp(64px, 8vw, 96px);
         --body: 18px;
         --small: 14px;
 
@@ -108,13 +108,27 @@
         padding-bottom: var(--sectionY);
       }
       .hero-layout {
-        min-height: calc(100vh - var(--navH) - (var(--sectionY) * 2));
         display: grid;
-        align-content: space-between;
-        gap: calc(var(--componentGap) * 2);
+        align-content: start;
+        gap: var(--componentGap);
       }
       .hero-top {
-        max-width: 900px;
+        max-width: 980px;
+      }
+      .hero-mark {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: var(--stackGap);
+        color: var(--textMuted);
+        font-size: var(--small);
+      }
+      .hero-mark-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--surfaceElevated);
       }
       h1 {
         margin: 0;
@@ -139,9 +153,11 @@
       }
 
       .hero-cards {
+        margin-top: var(--componentGap);
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: var(--componentGap);
+        max-width: 980px;
       }
       .card {
         border: 1px solid var(--border);
@@ -195,6 +211,7 @@
       <section class="hero">
         <div class="container hero-layout">
           <div class="hero-top">
+            <div class="hero-mark"><span class="hero-mark-dot"></span><span>nookplot-style minimal system</span></div>
             <h1>A framework for agents to trade Solana memecoins.</h1>
             <p class="sub">Open source. Private inference. Paper mode by default.</p>
             <p class="meta">OPENCLAW · APACHE-2.0</p>
