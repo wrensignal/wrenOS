@@ -3,340 +3,215 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>0xClaw — Where agents trade Solana memecoins</title>
-    <meta name="description" content="Get to first trade in 2 minutes. Private inference. Zero logs. Paper mode by default." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <title>0xClaw</title>
     <style>
       :root {
-        --bg: rgb(9, 9, 33);
-        --text: rgb(242, 244, 250);
-        --muted: rgba(242, 244, 250, 0.74);
-        --surface: rgba(20, 24, 56, 0.72);
-        --surface-2: rgba(24, 31, 78, 0.7);
-        --border: rgba(242, 244, 250, 0.16);
-        --border-strong: rgba(138, 124, 255, 0.55);
-        --accent: rgb(138, 124, 255);
-        --teal: #2EBAC6;
+        --bg: rgb(14, 15, 14);
+        --surface: rgba(239, 234, 216, 0.03);
+        --surfaceElevated: rgba(239, 234, 216, 0.06);
+        --text: rgb(239, 234, 216);
+        --textMuted: rgb(165, 165, 156);
+        --accent: rgb(143, 169, 143);
+        --border: rgba(239, 234, 216, 0.18);
 
-        --max: 1200px;
-        --px: 24px;
-        --py: 96px;
-        --gap: 24px;
-        --stack: 16px;
-        --radius: 14px;
+        --fontBody: 'DM Sans', system-ui, sans-serif;
+        --fontDisplay: 'Libre Baskerville', Georgia, serif;
+
+        --h1: clamp(44px, 5vw, 64px);
+        --body: 18px;
+        --small: 14px;
+
+        --lhDisplay: 1.08;
+        --lhBody: 1.5;
+        --lhSmall: 1.4;
+
+        --regular: 400;
+        --medium: 500;
+        --semibold: 600;
+
+        --base: 8px;
+        --sectionY: 96px;
+        --sectionX: 24px;
+        --componentGap: 24px;
+        --stackGap: 16px;
+        --cardPad: 24px;
+
+        --radiusSm: 8px;
+        --radiusMd: 16px;
+
+        --shadowCard: 0 8px 24px rgba(0,0,0,0.32);
+        --shadowHover: 0 10px 30px rgba(0,0,0,0.38);
+
+        --maxWidth: 1200px;
+        --navH: 62px;
       }
 
       * { box-sizing: border-box; }
-      html, body { margin: 0; }
+      html, body { margin: 0; padding: 0; }
       body {
-        font-family: "DM Sans", system-ui, sans-serif;
-        background: radial-gradient(900px 420px at 70% -15%, rgba(138,124,255,.32), transparent 70%), var(--bg);
+        background: var(--bg);
         color: var(--text);
+        font-family: var(--fontBody);
+        font-size: var(--body);
+        line-height: var(--lhBody);
       }
       a { color: inherit; text-decoration: none; }
+
       .container {
-        width: min(var(--max), 100%);
+        width: min(var(--maxWidth), 100%);
         margin-inline: auto;
-        padding-inline: var(--px);
+        padding-inline: var(--sectionX);
       }
 
       .nav {
-        height: 62px;
-        border-bottom: 1px solid var(--border);
-        background: rgba(9, 9, 33, .78);
-        backdrop-filter: blur(8px);
         position: sticky;
         top: 0;
-        z-index: 30;
+        z-index: 20;
+        height: var(--navH);
+        border-bottom: 1px solid var(--border);
+        background: rgba(14, 15, 14, 0.84);
+        backdrop-filter: blur(6px);
       }
       .nav-inner {
-        height: 62px;
+        height: var(--navH);
         display: flex;
         align-items: center;
         justify-content: space-between;
       }
-      .nav-links { display: flex; gap: 16px; color: var(--muted); font-size: 14px; }
-
-      section { padding-block: var(--py); }
-      h1 {
-        margin: 0;
-        font-size: 60px;
-        line-height: 90px;
-        font-weight: 700;
-        max-width: 930px;
+      .wordmark {
+        font-family: var(--fontDisplay);
+        font-size: 22px;
+        font-weight: var(--regular);
+        letter-spacing: -0.01em;
       }
-      h2 { margin: 0; font-size: 44px; line-height: 1.08; font-weight: 700; }
-      h3 { margin: 0; font-size: 24px; line-height: 1.16; font-weight: 700; }
-      p { margin: 0; color: var(--muted); }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: var(--stackGap);
+        font-size: var(--small);
+        color: var(--textMuted);
+      }
+      .link-btn {
+        min-height: 34px;
+        padding: 0 12px;
+        border: 1px solid var(--border);
+        border-radius: var(--radiusSm);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text);
+        background: var(--surface);
+      }
 
       .hero {
-        padding-top: 112px;
-        padding-bottom: 84px;
-        border-bottom: 1px solid var(--border);
+        padding-top: var(--sectionY);
+        padding-bottom: var(--sectionY);
       }
-      .hero-grid {
-        margin-top: 24px;
+      .hero-layout {
+        min-height: calc(100vh - var(--navH) - (var(--sectionY) * 2));
         display: grid;
-        grid-template-columns: 1.02fr .98fr;
-        gap: var(--gap);
-        align-items: start;
+        align-content: space-between;
+        gap: calc(var(--componentGap) * 2);
       }
-      .pill-row { display: flex; gap: 8px; margin-bottom: 16px; }
-      .pill {
-        min-height: 28px;
-        padding: 0 12px;
-        border-radius: 999px;
-        border: 1px solid var(--border);
-        display: inline-flex;
-        align-items: center;
-        font-size: 12px;
-        font-weight: 700;
+      .hero-top {
+        max-width: 900px;
       }
-      .pill-agents { background: #F2C94C; color: #1f1d1d; border-color: #F2C94C; }
-      .pill-new { background: rgba(138,124,255,.2); color: var(--text); border-color: var(--border-strong); }
+      h1 {
+        margin: 0;
+        font-family: var(--fontDisplay);
+        font-size: var(--h1);
+        line-height: var(--lhDisplay);
+        font-weight: var(--regular);
+        letter-spacing: -0.01em;
+        text-wrap: balance;
+      }
+      .sub {
+        margin-top: var(--stackGap);
+        color: var(--textMuted);
+        font-size: var(--body);
+      }
+      .meta {
+        margin-top: calc(var(--stackGap) / 2);
+        color: var(--accent);
+        font-size: var(--small);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
 
+      .hero-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--componentGap);
+      }
       .card {
-        background: var(--surface);
         border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 20px;
-        transition: box-shadow .2s ease, border-color .2s ease, transform .2s ease;
+        border-radius: var(--radiusMd);
+        padding: var(--cardPad);
+        background: var(--surface);
+        box-shadow: var(--shadowCard);
       }
       .card:hover {
-        border-color: var(--border-strong);
-        box-shadow: 0 0 0 1px rgba(138,124,255,.2), 0 10px 30px rgba(9,9,33,.45);
-        transform: translateY(-1px);
+        background: var(--surfaceElevated);
+        box-shadow: var(--shadowHover);
       }
-
-      .hero-sub { margin-top: 12px; max-width: 70ch; }
-      .hero-note { margin-top: 4px; font-size: 14px; color: var(--text); }
-      .cta-row { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
-      .btn {
-        min-height: 40px;
-        padding: 0 18px;
-        border-radius: 10px;
-        border: 1px solid var(--border);
-        background: rgba(255,255,255,0.02);
-        color: var(--text);
-        font-size: 14px;
-        font-weight: 700;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .btn:hover { border-color: var(--border-strong); box-shadow: 0 0 0 1px rgba(138,124,255,.2) inset; }
-
-      .term-top {
-        min-height: 36px;
-        border-bottom: 1px solid var(--border);
+      .card-title {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 8px 12px;
-        font-size: 12px;
-        color: var(--muted);
+        gap: 10px;
+        font-size: 18px;
+        font-weight: var(--medium);
+        color: var(--text);
       }
-      .dots { display: flex; gap: 6px; }
-      .dot { width: 9px; height: 9px; border-radius: 50%; }
-      .dot.r { background: #FF5F56; }
-      .dot.y { background: #FFBD2E; }
-      .dot.g { background: #27C93F; }
-      .mcp { border: 1px solid var(--border-strong); border-radius: 999px; padding: 2px 8px; color: var(--text); }
-      pre {
-        margin: 0;
-        padding: 14px;
-        font-size: 13px;
-        line-height: 1.45;
-        color: #DBE3FF;
+      .card-copy {
+        margin-top: 8px;
+        font-size: var(--small);
+        color: var(--textMuted);
+        line-height: var(--lhSmall);
       }
 
-      .option-row { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-      .option {
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 12px;
-        background: var(--surface-2);
-        display: grid;
-        gap: 2px;
-      }
-      .option b { font-size: 13px; }
-      .option span { font-size: 12px; color: var(--muted); }
-      .works { margin-top: 12px; font-size: 13px; color: var(--muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-      .logo-pill { border: 1px solid var(--border); border-radius: 999px; padding: 3px 8px; font-size: 12px; }
-
-      .sub { margin: 10px 0 24px; }
-
-      .path-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--gap); align-items: stretch; }
-      .recommended { border-color: var(--teal); box-shadow: 0 0 0 1px rgba(46,186,198,.22) inset; }
-      .muted-card { opacity: .86; }
-      .or { width: 72px; display: grid; grid-template-rows: 1fr auto 1fr; align-items: center; justify-items: center; color: var(--muted); font-size: 12px; }
-      .or .line { width: 1px; height: 100%; background: var(--border); }
-
-      .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--gap); }
-      .list { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-      .row {
-        min-height: 84px;
-        border-bottom: 1px solid var(--border);
-        display: grid;
-        grid-template-columns: minmax(250px, 290px) 1fr;
-        gap: var(--gap);
-        align-items: center;
-        padding: 10px 0;
-      }
-      .row:last-child { border-bottom: 0; }
-      .row b { font-size: 15px; }
-
-      .tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--gap); }
-      .tool-card .count { font-size: 12px; color: var(--teal); margin-top: 4px; margin-bottom: 8px; font-weight: 700; letter-spacing: .04em; }
-      .tool-card p { font-size: 15px; line-height: 1.5; }
-
-      .footer {
-        border-top: 1px solid var(--border);
-        padding: 48px 0;
-        font-size: 14px;
-        color: var(--muted);
-      }
-      .footer-grid { display: flex; gap: 24px; flex-wrap: wrap; justify-content: space-between; }
-
-      @media (max-width: 980px) {
-        h1 { font-size: 44px; line-height: 1.12; }
-        section { padding-block: 72px; }
-        .hero-grid, .path-grid, .grid-3, .tool-grid, .option-row { grid-template-columns: 1fr; }
-        .or { width: 100%; min-height: 56px; grid-template-columns: 1fr auto 1fr; grid-template-rows: none; }
-        .or .line { width: 100%; height: 1px; }
-        .row { grid-template-columns: 1fr; min-height: auto; }
-        .nav-links a:not(.btn) { display: none; }
+      @media (max-width: 860px) {
+        .hero-layout {
+          min-height: auto;
+          gap: var(--componentGap);
+        }
+        .hero-cards {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
   <body>
     <header class="nav">
       <div class="container nav-inner">
-        <strong>0xClaw</strong>
-        <nav class="nav-links">
-          <a href="#setup">Setup</a>
-          <a href="#features">Features</a>
-          <a href="#architecture">Architecture</a>
-          <a href="#tools">Tools</a>
-          <a href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">GitHub</a>
+        <div class="wordmark">0xClaw</div>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="../README.md">Docs</a>
+          <a class="link-btn" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">GitHub</a>
         </nav>
       </div>
     </header>
 
     <main>
       <section class="hero">
-        <div class="container">
-          <h1>Where agents come to trade Solana memecoins.</h1>
-          <div class="hero-grid">
-            <div>
-              <div class="pill-row">
-                <span class="pill pill-agents">⚡ For Agents</span>
-                <span class="pill pill-new">NEW</span>
-              </div>
-              <p class="hero-sub">Get to first trade in 2 minutes. Private inference. Zero logs. Paper mode by default.</p>
-              <p class="hero-note">Optimized for OpenClaw — the open agent framework.</p>
-              <div class="cta-row">
-                <a class="btn" href="../README.md#quick-start">🧠 Set up your agent</a>
-                <a class="btn" href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">↗ View on GitHub</a>
-              </div>
-
-              <div class="option-row">
-                <a class="option" href="../RAILWAY_DEPLOY.md"><b>🚀 0xClaw + Railway</b><span>Easy · Safe · Recommended</span></a>
-                <a class="option" href="../README.md"><b>🧩 OpenClaw Self Hosted</b><span>Most advanced</span></a>
-              </div>
-
-              <div class="works">
-                <span>Also works with</span>
-                <span class="logo-pill">OpenClaw</span>
-                <span class="logo-pill">Telegram</span>
-                <span class="logo-pill">Railway</span>
-                <span class="logo-pill">Jupiter</span>
-                <span class="logo-pill">pump.fun</span>
-              </div>
-            </div>
-
-            <aside class="card">
-              <div class="term-top">
-                <span class="dots"><i class="dot r"></i><i class="dot y"></i><i class="dot g"></i></span>
-                <span class="mcp">MCP</span>
-              </div>
-              <pre><code>$ bash scripts/install.sh
-[0xClaw] profile: research-agent
-[0xClaw] venues: jupiter, pump.fun
-[0xClaw] mode: paper
-[0xClaw] status: ready ✅</code></pre>
-            </aside>
+        <div class="container hero-layout">
+          <div class="hero-top">
+            <h1>A framework for agents to trade Solana memecoins.</h1>
+            <p class="sub">Open source. Private inference. Paper mode by default.</p>
+            <p class="meta">OPENCLAW · APACHE-2.0</p>
           </div>
-        </div>
-      </section>
 
-      <section id="setup">
-        <div class="container">
-          <h2>Get to first trade in 2 minutes</h2>
-          <p class="sub">Launch your agent with one click or self-host with full control.</p>
-          <div class="path-grid">
-            <article class="card recommended">
-              <h3>0xClaw + Railway</h3>
-              <p>One-click deploy, set env vars, connect Telegram, trading in minutes.</p>
+          <div class="hero-cards">
+            <article class="card">
+              <div class="card-title">◉ 0xClaw + Railway</div>
+              <p class="card-copy">One-click deploy. Safe defaults. Recommended.</p>
             </article>
-            <div class="or"><div class="line"></div>OR<div class="line"></div></div>
-            <article class="card muted-card">
-              <h3>Self-hosted</h3>
-              <p>Clone repo, npm install, init profile, full control.</p>
+            <article class="card">
+              <div class="card-title">◎ Self-hosted</div>
+              <p class="card-copy">Clone, configure, full control.</p>
             </article>
-          </div>
-          <p class="sub" style="margin-top:24px; margin-bottom:0;">Also works with OpenClaw, Telegram, Railway, Jupiter, and pump.fun.</p>
-        </div>
-      </section>
-
-      <section id="features">
-        <div class="container">
-          <h2>What you get</h2>
-          <div class="grid-3" style="margin-top:24px;">
-            <article class="card"><h3>Deploy</h3><p>One-click Railway or manual OpenClaw setup. Paper mode default.</p></article>
-            <article class="card"><h3>Configure</h3><p>Wallet, model routing, MCP servers, confidence tiers. 0xclaw config set for everything.</p></article>
-            <article class="card"><h3>Trade</h3><p>Jupiter + pump.fun execution paths. Paper mode first, live when ready.</p></article>
-          </div>
-        </div>
-      </section>
-
-      <section id="architecture">
-        <div class="container">
-          <h2>Architecture / How it works</h2>
-          <div class="list" style="margin-top:24px;">
-            <div class="row"><b>Dual-agent architecture</b><span>Research agent (signal discovery) → Trading agent (strategy + execution)</span></div>
-            <div class="row"><b>Inference</b><span>Private models via Speakeasy (DeepSeek V3.2, Qwen3 Thinking, Qwen3 Coder, Venice Uncensored)</span></div>
-            <div class="row"><b>Data</b><span>Helius on-chain + agenti-lite + crypto-news-lite + pump.fun SDK</span></div>
-            <div class="row"><b>Handoff</b><span>Research briefs flow from scout to trader via inbox contract</span></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="tools">
-        <div class="container">
-          <h2>Tools & capability categories</h2>
-          <p class="sub">Built like Senpi’s toolkit cards, mapped to 0xClaw primitives.</p>
-          <div class="tool-grid">
-            <article class="card tool-card"><h3>🧭 Meme Discovery Engine</h3><div class="count">7 signal dimensions</div><p>Composite scoring across wallet flow, liquidity, volume momentum, social velocity, holder distribution, news catalysts, and contract safety.</p></article>
-            <article class="card tool-card"><h3>⚡ Execution Adapters</h3><div class="count">2 venues</div><p>Jupiter (referral-capable) + pump.fun (direct bonding curve). Paper mode default, live when ready.</p></article>
-            <article class="card tool-card"><h3>🧠 Inference Routing</h3><div class="count">4 models</div><p>DeepSeek V3.2, Qwen3 Thinking, Qwen3 Coder, Venice Uncensored. Private inference, zero logs.</p></article>
-            <article class="card tool-card"><h3>🔧 Data & MCP Servers</h3><div class="count">3 servers</div><p>agenti-lite (universal crypto MCP), pump-fun-sdk-lite (bonding curve data), Helius (on-chain Solana data).</p></article>
-            <article class="card tool-card"><h3>📦 Agent Packs</h3><div class="count">2 packs</div><p>Dual Agent Pack (research → trading handoff), Meme Discovery Pack (Scout + Rook in a box).</p></article>
-            <article class="card tool-card"><h3>🛡️ Safety & Risk</h3><div class="count">4 tiers</div><p>Confidence tier system (normal → reweight → safe mode → hold/observe), regression gates, drawdown limits, explicit approvals.</p></article>
           </div>
         </div>
       </section>
     </main>
-
-    <footer class="footer">
-      <div class="container footer-grid">
-        <a href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">GitHub</a>
-        <a href="../README.md" target="_blank" rel="noreferrer">Docs</a>
-        <a href="https://www.speakeasyrelay.com/" target="_blank" rel="noreferrer">Powered by Speakeasy</a>
-        <span>Apache-2.0</span>
-      </div>
-    </footer>
   </body>
 </html>
