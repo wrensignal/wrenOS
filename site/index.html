@@ -166,6 +166,12 @@
         background: var(--surface);
         box-shadow: var(--shadowCard);
       }
+      .hero-cards .card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--componentGap);
+      }
       .card:hover {
         background: var(--surfaceElevated);
         box-shadow: var(--shadowHover);
@@ -177,12 +183,14 @@
         font-size: 18px;
         font-weight: var(--medium);
         color: var(--text);
+        white-space: nowrap;
       }
       .card-copy {
-        margin-top: 8px;
+        margin: 0;
         font-size: var(--small);
         color: var(--textMuted);
         line-height: var(--lhSmall);
+        text-align: right;
       }
 
       @media (max-width: 860px) {
@@ -211,10 +219,9 @@
       <section class="hero">
         <div class="container hero-layout">
           <div class="hero-top">
-            <div class="hero-mark"><span class="hero-mark-dot"></span><span>nookplot-style minimal system</span></div>
-            <h1>A framework for agents to trade Solana memecoins.</h1>
+            <div class="hero-mark"><span class="hero-mark-dot"></span><span>Quiet mode</span></div>
+            <h1>Your Agents Memecoin Trading Stack.</h1>
             <p class="sub">Open source. Private inference. Paper mode by default.</p>
-            <p class="meta">OPENCLAW · APACHE-2.0</p>
           </div>
 
           <div class="hero-cards">
