@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>0xClaw</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:wght@400&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&display=swap" rel="stylesheet" />
     <style>
       :root {
         --bg: rgb(14, 15, 14);
@@ -11,8 +14,9 @@
         --surfaceElevated: rgba(239, 234, 216, 0.06);
         --text: rgb(239, 234, 216);
         --textMuted: rgb(165, 165, 156);
-        --accent: rgb(143, 169, 143);
-        --senpiEdge: rgba(138, 124, 255, 0.62);
+        --accent: rgb(79, 123, 255);
+        --accentSoft: rgba(79, 123, 255, 0.20);
+        --accentSoft2: rgba(116, 147, 255, 0.24);
         --border: rgba(239, 234, 216, 0.18);
 
         --fontBody: 'DM Sans', system-ui, sans-serif;
@@ -110,12 +114,13 @@
         display: grid;
         align-items: center;
         padding-top: var(--sectionY);
-        padding-bottom: calc(var(--sectionY) + 32px);
+        padding-bottom: calc(var(--sectionY) + 16px);
       }
       .hero-layout {
         display: grid;
         align-content: center;
         gap: calc(var(--componentGap) + 4px);
+        transform: translateY(-18px);
       }
       .hero-top {
         max-width: 980px;
@@ -169,7 +174,7 @@
       .card {
         border: 1px solid rgba(239, 234, 216, 0.10);
         border-radius: var(--radiusMd);
-        padding: 18px 16px;
+        padding: 22px 16px;
         background: var(--surface);
         box-shadow: var(--shadowCard);
       }
@@ -190,11 +195,16 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 20px;
         flex: 0 0 48px;
       }
-      .card-icon-rail { background: rgba(46, 186, 198, 0.22); }
-      .card-icon-self { background: rgba(138, 124, 255, 0.20); font-size: 16px; }
+      .ms {
+        font-family: 'Material Symbols Rounded';
+        font-size: 22px;
+        line-height: 1;
+        color: var(--text);
+      }
+      .card-icon-rail { background: var(--accentSoft); }
+      .card-icon-self { background: var(--accentSoft2); }
       .card-content {
         display: grid;
         align-content: center;
@@ -216,26 +226,19 @@
       .scroll-indicator {
         position: absolute;
         left: 50%;
-        bottom: 18px;
+        bottom: 16px;
         transform: translateX(-50%);
         color: var(--textMuted);
         font-size: 12px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
+        display: grid;
+        justify-items: center;
+        gap: 6px;
       }
-      .scroll-indicator::before {
-        content: "⌄";
-        width: 22px;
-        height: 22px;
-        border: 1px solid var(--border);
-        border-radius: 999px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 13px;
+      .scroll-indicator::after {
+        content: "↓";
+        font-size: 14px;
         line-height: 1;
       }
       .card-top {
@@ -247,7 +250,7 @@
       .card-badge {
         position: absolute;
         left: 50%;
-        bottom: -11px;
+        bottom: -13px;
         transform: translateX(-50%);
         font-size: 11px;
         color: var(--text);
@@ -260,8 +263,8 @@
       .card.recommended {
         border-color: var(--accent);
         box-shadow:
-          0 0 0 1px rgba(143, 169, 143, 0.24) inset,
-          0 0 36px rgba(143, 169, 143, 0.18);
+          0 0 0 1px rgba(79, 123, 255, 0.24) inset,
+          0 0 36px rgba(79, 123, 255, 0.20);
         position: relative;
       }
       .card.recommended::before {
@@ -270,13 +273,14 @@
         inset: -1px;
         border-radius: var(--radiusMd);
         pointer-events: none;
-        background: radial-gradient(circle at 22% 20%, rgba(143, 169, 143, 0.22), transparent 55%);
+        background: radial-gradient(circle at 22% 20%, rgba(79, 123, 255, 0.24), transparent 55%);
       }
 
       @media (max-width: 860px) {
         .hero-layout {
           min-height: auto;
           gap: var(--componentGap);
+          transform: none;
         }
         .hero-cards {
           grid-template-columns: 1fr;
@@ -305,7 +309,7 @@
 
           <div class="hero-cards">
             <article class="card recommended">
-              <div class="card-icon card-icon-rail">⚡</div>
+              <div class="card-icon card-icon-rail"><span class="ms">rocket_launch</span></div>
               <div class="card-content">
                 <div class="card-title">0xClaw + Railway</div>
                 <p class="card-copy">Easy. Safe. One-click deploy.</p>
@@ -313,7 +317,7 @@
               <span class="card-badge">Recommended</span>
             </article>
             <article class="card">
-              <div class="card-icon card-icon-self">&gt;_</div>
+              <div class="card-icon card-icon-self"><span class="ms">terminal</span></div>
               <div class="card-content">
                 <div class="card-title">Self-hosted</div>
                 <p class="card-copy">Advanced. Full control over everything.</p>
