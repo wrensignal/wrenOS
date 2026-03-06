@@ -12,6 +12,7 @@
         --text: rgb(239, 234, 216);
         --textMuted: rgb(165, 165, 156);
         --accent: rgb(143, 169, 143);
+        --senpiEdge: rgba(138, 124, 255, 0.62);
         --border: rgba(239, 234, 216, 0.18);
 
         --fontBody: 'DM Sans', system-ui, sans-serif;
@@ -157,7 +158,7 @@
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: var(--stackGap);
-        max-width: 1080px;
+        max-width: 980px;
       }
       .card {
         border: 1px solid rgba(239, 234, 216, 0.10);
@@ -170,6 +171,7 @@
         display: flex;
         align-items: center;
         gap: var(--stackGap);
+        position: relative;
       }
       .card:hover {
         background: var(--surfaceElevated);
@@ -190,7 +192,8 @@
       .card-content {
         display: grid;
         align-content: center;
-        gap: 4px;
+        gap: 6px;
+        width: 100%;
       }
       .card-title {
         font-size: var(--body);
@@ -203,6 +206,29 @@
         font-size: var(--small);
         color: var(--textMuted);
         line-height: var(--lhSmall);
+      }
+      .card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .card-badge {
+        position: absolute;
+        left: 50%;
+        bottom: -11px;
+        transform: translateX(-50%);
+        font-size: 11px;
+        color: var(--text);
+        border: 1px solid var(--senpiEdge);
+        background: var(--bg);
+        border-radius: 999px;
+        padding: 2px 8px;
+        white-space: nowrap;
+      }
+      .card.recommended {
+        border-color: var(--senpiEdge);
+        box-shadow: 0 0 0 1px rgba(138, 124, 255, 0.22) inset;
       }
 
       @media (max-width: 860px) {
@@ -236,18 +262,19 @@
           </div>
 
           <div class="hero-cards">
-            <article class="card">
+            <article class="card recommended">
               <div class="card-icon card-icon-rail">⚡</div>
               <div class="card-content">
                 <div class="card-title">0xClaw + Railway</div>
-                <p class="card-copy">Easy · Safe · Recommended</p>
+                <p class="card-copy">Easy. Safe. One-click deploy.</p>
               </div>
+              <span class="card-badge">Recommended</span>
             </article>
             <article class="card">
               <div class="card-icon card-icon-self">&gt;_</div>
               <div class="card-content">
                 <div class="card-title">Self-hosted</div>
-                <p class="card-copy">Full control · Open source</p>
+                <p class="card-copy">Advanced. Full control over everything.</p>
               </div>
             </article>
           </div>
