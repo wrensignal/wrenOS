@@ -137,6 +137,7 @@ npm run verify
 ## Docs
 
 - `docs/quickstart.md`
+- `docs/runtime-status.md`
 - `docs/safety.md`
 - `docs/speakeasy-integration.md`
 - `docs/migrating-from-0xclaw-to-wrenos.md` (canonical migration guide)
