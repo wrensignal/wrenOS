@@ -1,22 +1,41 @@
 # WrenOS
 
-WrenOS is a **crypto agent control plane**: safe-by-default, inspectable, paper-first, and operator-oriented.
+WrenOS is the open-source **control plane** for operator-managed crypto agent systems.
 
-It is OpenClaw-compatible and can run with hosted-default or self-hosted infrastructure.
+This repository provides the WrenOS CLI, profiles, packs, adapters, loop primitives, and inspectable file-based configuration that power evidence-based workflows:
+
+**discover → score → validate → execute (paper-first)**
+
+It is designed for operators who want explicit control and auditability, not black-box automation.
+
+- **Who it is for:** solo operators, small teams, and infra-minded builders running agent workflows.
+- **What works today:** bootstrap/config flows, safety checks, profile/pack setup, inference/execution connectivity tests, and CLI-driven inspectable runtime config.
+- **Hosted default vs self-host override:** works with hosted-default services (for example Speakeasy inference routing), and can run with self-host overrides by replacing endpoints/config.
+- **Safety guarantees:** `liveExecution: false` by default, explicit approvals, confidence-tier fallback behavior, and inspectable JSON/Markdown artifacts.
+- **Not yet shipped:** one-command long-running orchestration (`wrenos start`).
 
 > This project was previously known as **0xClaw**. See `docs/migrating-from-0xclaw-to-wrenos.md` for migration details.
 > Legacy `0xclaw` CLI + `.0xclaw` config compatibility is supported during the migration window (planned removal: **v0.3.0**).
 
-## What this repo is
+## Repository maturity
 
-- WrenOS CLI + inspectable file-based configuration for operator workflows
-- WrenOS profiles, packs, loops, and adapters
-- hosted-default routing (Speakeasy), fully self-hostable overrides
-- reproducible paper-first control-plane patterns
+### Available today
+- `wrenos` CLI lifecycle: `init`, `doctor`, `status`, `config`, `wallet setup`, `test inference`, `test execution`, `init-pack`, `bootstrap-wrenos`, `migrate`
+- Inspectable file-based config and generated artifacts under `.wrenos/`
+- Evidence-first paper workflow example (`examples/wrenos-paper-happy-path`)
+- CI-ready verification path (`npm run verify` + GitHub Actions CI)
+
+### Experimental
+- Turnkey Telegram/operator UX conventions and some pack ergonomics
+- Rapidly evolving adapter integration surface for multi-venue execution workflows
+
+### Planned
+- `wrenos start` orchestration command (not shipped yet)
+- Broader deployment automation and managed observability bundles
 
 ## WrenOS pipeline (evidence-first)
 
-WrenOS is designed around a technical loop:
+WrenOS is built around a technical loop:
 
 1. **discover** market/research inputs
 2. **score** candidates with explicit signals
@@ -24,15 +43,6 @@ WrenOS is designed around a technical loop:
 4. **execute** in paper mode first (live only by explicit approval)
 
 Every stage is inspectable through config and generated artifacts.
-
-## What is usable today vs experimental vs planned
-
-| Status | Surface |
-|---|---|
-| **Usable today** | `wrenos init`, `doctor`, `status`, `config`, `wallet setup`, `test inference`, `test execution`, `init-pack`, `bootstrap-wrenos` |
-| **Usable today** | `packages/core`, `packages/loops`, `packages/profiles`, `packages/adapters`, `packages/speakeasy-ai` |
-| **Experimental** | Turnkey Telegram-agent UX templates and pack conventions |
-| **Planned** | `wrenos start` orchestration command (not shipped yet) |
 
 ## Clone and install
 
@@ -55,7 +65,7 @@ wrenos status
 Concrete flow: discovery input → validation/gating → paper decision → audit log
 
 ```bash
-node examples/wrenos-paper-happy-path/run.mjs
+npm run example:paper
 cat examples/wrenos-paper-happy-path/out/paper-decision-log.json
 ```
 
@@ -84,27 +94,42 @@ wrenos migrate --force
 
 ## Safety posture
 
-- `liveExecution: false` by default
-- explicit approvals required for external side effects
-- confidence-tier fallback behavior is mandatory
-- inspectable JSON/Markdown outputs for auditability
+- **Execution begins in paper mode by default.**
+- **Live execution requires explicit enablement.**
+- **External side effects require approvals.**
+- Confidence tiers degrade behavior when data quality weakens (up to hold/observe mode).
+- Operator overrides are visible in inspectable config files.
+- JSON/Markdown artifacts preserve auditability across decision stages.
 
 ## Package map
 
-- `packages/core` — policy defaults, fallback semantics
-- `packages/adapters` — inference/execution/telegram adapters + quality tier logic
-- `packages/loops` — heartbeat + scorecard primitives
-- `packages/cli` — operator commands
-- `packages/profiles` — starter templates
-- `packages/speakeasy-ai` — OpenAI-compatible client with built-in x402 flow
+- `packages/cli` — **WrenOS CLI control surface** for bootstrap, config, safety checks, migration, and template generation.  
+  **Maturity:** stable
+
+- `packages/core` — shared policy defaults and fallback semantics used across the control plane.  
+  **Maturity:** stable
+
+- `packages/profiles` — starter profile templates that define operator intent and risk posture.  
+  **Maturity:** stable
+
+- `packages/loops` — heartbeat/scorecard primitives for validation-aware loop behavior.  
+  **Maturity:** stable (evolving logic surface)
+
+- `packages/adapters` — WrenOS-compatible adapters for inference, execution, and operator interfaces.  
+  **Maturity:** active/evolving integration surface
+
+- `packages/speakeasy-ai` — OpenAI-compatible Speakeasy client with built-in x402 flow.  
+  **Maturity:** stable (kept as separate package identity for compatibility)
 
 ## Scripts
 
 ```bash
 npm run build
-npm run test
 npm run lint
 npm run typecheck
+npm run test
+npm run smoke:cli
+npm run verify
 ```
 
 ## Docs

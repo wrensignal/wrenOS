@@ -3,7 +3,7 @@
 ## Usable today
 
 - CLI lifecycle: `init`, `doctor`, `status`, `config`, `wallet`, `test`, `init-pack`, `bootstrap-wrenos`
-- Profile templates (paper-first defaults)
+- Profile templates (paper mode defaults)
 - Speakeasy inference connectivity testing
 - Jupiter route-path execution testing
 - file-based inspectable configuration and outputs

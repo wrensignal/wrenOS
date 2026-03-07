@@ -1,70 +1,85 @@
 # Quickstart
 
-## Option A — One-command installer (recommended for fresh operators)
+This guide gives you a smooth first run for WrenOS, even while some orchestration features are still evolving.
+
+## Recommended operator path (canonical onboarding)
+
+1. Install dependencies
+2. Run system diagnostics (`doctor`)
+3. Initialize a profile
+4. Inspect system snapshot (`status`)
+5. Generate and review templates
+6. Run the paper happy-path example
+7. Verify paper-mode safety posture
+8. Optionally connect integrations
+
+---
+
+## Option A — one-command installer (recommended)
 
 ```bash
 bash scripts/install.sh
 ```
 
-This script:
-1. Verifies Node.js >= 20 is present
-2. Runs `npm install`
-3. Runs `doctor` to validate the environment
-4. Runs `init --profile research-agent` (skipped if already initialised)
-5. Prints next steps
-
-The script is idempotent — safe to run more than once.
+The installer is idempotent and covers install + baseline diagnostics.
 
 ---
 
-## Option B — Manual setup
+## Option B — manual setup
 
 ### 1) Install
 ```bash
 npm install
 ```
 
-### 2) Validate environment
+### 2) Doctor
 ```bash
 wrenos doctor
 ```
 
-### 3) Initialize profile
+### 3) Init
 ```bash
 wrenos init --profile research-agent
 ```
 
-### 4) Check status
+### 4) Status
 ```bash
 wrenos status
 ```
 
----
-
-## Generating WrenOS operator templates
-
-After initialising, scaffold starter `AGENTS.md` and `HEARTBEAT.md` templates:
-
+### 5) Templates
 ```bash
 wrenos bootstrap-wrenos
-```
-
-This creates `.wrenos/wrenos-templates/` containing:
-
-| File | Purpose |
-|------|---------|
-| `AGENTS.md` | Agent identity, data sources, confidence tiers, risk limits |
-| `HEARTBEAT.md` | Heartbeat loop cadence, lanes, adaptive tuner, regression guard |
-| `README.md` | Instructions for copying and activating the templates |
-
-Templates are **not** active until you copy them into `.wrenos/`:
-
-```bash
 cp .wrenos/wrenos-templates/AGENTS.md .wrenos/AGENTS.md
 cp .wrenos/wrenos-templates/HEARTBEAT.md .wrenos/HEARTBEAT.md
 ```
 
-All templates default to `liveExecution: false`. See `docs/safety.md` before enabling live execution.
+### 6) Safe defaults (read this before proceeding)
+
+- Execution begins in paper mode by default (`liveExecution: false`).
+- Live execution requires explicit enablement.
+- External side effects require approvals.
+- Confidence-tier fallbacks should degrade safely under weak data.
+
+See `docs/safety.md` for full policy guidance.
+
+### 7) Next steps
+
+Run the deterministic paper happy-path flow:
+
+```bash
+npm run example:paper
+cat examples/wrenos-paper-happy-path/out/paper-decision-log.json
+```
+
+Optional integrations after baseline validation:
+
+```bash
+wrenos test inference
+wrenos test execution
+wrenos wallet setup
+wrenos init-pack --pack dual-agent-pack
+```
 
 ---
 
@@ -75,35 +90,36 @@ All templates default to `liveExecution: false`. See `docs/safety.md` before ena
 | `research-agent` | off | none |
 | `solo-trader-paper` | off | paper |
 
-Switch profiles at any time by re-running `init`:
+Switch profiles any time:
 
 ```bash
 wrenos init --profile solo-trader-paper
 ```
 
+---
 
-## Optional: initialize a neutral dual-agent pack
+## Orchestration expectations and current limits
 
-```bash
-wrenos init-pack --pack dual-agent-pack
-```
+WrenOS already supports inspectable setup, diagnostics, profile/pack config, and paper-first example flow.
 
-This creates `.wrenos/pack-dual-agent.json` with neutral names (`research-agent`, `trading-agent`) and a handoff contract.
+What is **not yet shipped**:
+- `wrenos start` long-running orchestration command
 
+Current expectation:
+- Use your existing scheduler/heartbeat process (cron, supervisor, or platform runtime) for long-running loops.
 
-## Roadmap note
-
-`wrenos start` orchestration command is not shipped yet. Use your existing heartbeat/cron wiring for now.
+---
 
 ## Migration note
 
 If you're coming from `0xClaw`:
 - use `wrenos` as the primary CLI name
 - `0xclaw` remains as temporary compatibility alias
-- `.wrenos/` is the new primary config directory (`.0xclaw/` fallback still supported)
-- optional migration command: `wrenos migrate` (or `wrenos migrate --force`)
-- after migration, validate with: `wrenos doctor && wrenos status`
+- `.wrenos/` is the primary config directory (`.0xclaw/` fallback supported during migration)
+- run `wrenos migrate` (or `wrenos migrate --force`) to move legacy config
 
-See: `docs/migration-0xclaw-to-wrenos.md`
+See:
+- `docs/migrating-from-0xclaw-to-wrenos.md`
+- `docs/migration-0xclaw-to-wrenos.md`
 
-See also: `docs/speakeasy-integration.md` for private inference routing guidance.
+For hosted/private inference routing details, see `docs/speakeasy-integration.md`.

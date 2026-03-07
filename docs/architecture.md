@@ -2,17 +2,39 @@
 
 WrenOS is a composable operator control plane for crypto-agent deployments. The architecture is designed so operators can start in paper mode quickly, then progressively harden for production.
 
+## System model (three layers)
+
+WrenOS is best understood as three interacting layers:
+
+1. **Open-source control plane (this repo)**
+   - WrenOS CLI
+   - profiles + packs
+   - loop/adaptation primitives
+   - adapters
+   - inspectable file-based operator config
+
+2. **Hosted runtime infrastructure (optional/default path)**
+   - hosted-default inference/runtime services (for example Speakeasy)
+   - operator can use these for faster setup and managed routing
+
+3. **Operator workflows and governance**
+   - local policy choices (paper vs live)
+   - explicit approvals for external side effects
+   - runbooks, diagnostics, and audits
+
 ## Repository boundary (what this repo is)
 
-This repository is the open-source **WrenOS control plane**.
-It includes:
-- WrenOS CLI
-- profiles and packs
-- loop/adaptation primitives
-- adapters
-- inspectable file-based operator config
+This repository is the open-source **WrenOS control plane** for operator-managed agent systems.
 
-It can run fully self-hosted, and can also integrate with hosted-default runtime/inference services (for example Speakeasy).
+It is intended for solo operators, small teams, and infra-minded builders who need explicit control and auditability.
+
+Hosted-default and self-host override interaction:
+- You can run this control plane with hosted-default infrastructure.
+- You can apply self-host overrides for endpoints/runtime dependencies.
+- The same operator/profile/pack config model applies in both paths.
+
+Known not-yet-shipped orchestration surface:
+- `wrenos start` (planned)
 
 ## Layer model
 

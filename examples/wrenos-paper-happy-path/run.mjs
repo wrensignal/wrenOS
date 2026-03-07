@@ -31,9 +31,10 @@ const heartbeatPlan = buildHeartbeatPlan({
   explore: symbols.slice(3, 8).map((s) => s.key),
   tuner: { cadence: 'adaptive', gatePass }
 });
+heartbeatPlan.ts = input.asOf || '2026-03-07T00:00:00.000Z';
 
 const audit = {
-  ts: new Date().toISOString(),
+  ts: input.asOf || '2026-03-07T00:00:00.000Z',
   stage: {
     discovery: { walletFlowRows: input.walletFlow.length, selectedSymbols: symbols.length },
     validation: { quality, scorecards, gatePass },

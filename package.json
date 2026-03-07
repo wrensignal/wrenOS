@@ -22,7 +22,10 @@
     "build": "node scripts/build.mjs",
     "test": "npm run test --workspaces --if-present",
     "lint": "node scripts/lint.mjs",
-    "typecheck": "node scripts/typecheck.mjs"
+    "typecheck": "node scripts/typecheck.mjs",
+    "example:paper": "node examples/wrenos-paper-happy-path/run.mjs",
+    "smoke:cli": "node scripts/cli-smoke.mjs",
+    "verify": "npm run build && npm run lint && npm run typecheck && npm run test && npm run smoke:cli"
   },
   "engines": {
     "node": ">=20"

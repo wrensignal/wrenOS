@@ -18,4 +18,4 @@ node examples/wrenos-paper-happy-path/run.mjs
 - console summary with final paper decision
 - JSON audit log written to `examples/wrenos-paper-happy-path/out/paper-decision-log.json`
 
-This is intentionally inspectable and file-first so operators can review every decision stage.
+This example is deterministic (fixed input snapshot), inspectable, and file-first so operators can review every decision stage.

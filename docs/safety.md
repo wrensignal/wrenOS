@@ -2,11 +2,15 @@
 
 WrenOS is designed for staged rollout: research mode -> paper mode -> explicitly approved live mode.
 
+Execution begins in paper mode by default.
+Live execution requires explicit enablement.
+External side effects require approvals.
+
 ## Default safety gates
 
 - `liveExecution: false` by default in shipped profiles.
 - External side effects should require explicit operator approval.
-- Data-quality degradation should trigger fallback behavior instead of silent continuation.
+- Data-quality degradation should trigger confidence-tier fallback behavior instead of silent continuation.
 
 ## Secrets and keys
 

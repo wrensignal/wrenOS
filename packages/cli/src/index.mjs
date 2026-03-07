@@ -71,9 +71,11 @@ async function cmdInit() {
   await mkdir(configDir, { recursive: true });
   const profilePath = path.resolve(cwd, `packages/profiles/templates/${profile}.json`);
   let body;
+  let usedFallbackProfile = false;
   try {
     body = JSON.parse(await readFile(profilePath, 'utf8'));
   } catch {
+    usedFallbackProfile = true;
     body = { profile, liveExecution: false, loop: { heartbeatAdaptive: true } };
   }
   await writeFile(configPath, JSON.stringify({ ...body, createdAt: new Date().toISOString() }, null, 2));
@@ -84,7 +86,15 @@ async function cmdInit() {
     console.log(`Created ${path.relative(cwd, mcpPath)} with agenti-lite, pump-fun-sdk-lite, helius`);
   }
 
-  console.log(`Initialized wrenos in ${configDir} with profile=${profile}`);
+  console.log(JSON.stringify({
+    ok: true,
+    action: 'init',
+    profile,
+    configPath,
+    liveExecutionDefault: false,
+    approvalPosture: 'External side effects require approvals. Live execution requires explicit enablement.',
+    note: usedFallbackProfile ? 'Profile template missing; initialized with safe fallback scaffold.' : 'Profile template applied.'
+  }, null, 2));
 }
 
 
@@ -188,26 +198,154 @@ async function cmdInitPack() {
 }
 
 async function cmdDoctor() {
-  const checks = [];
-  checks.push({ name: 'node', ok: Number(process.versions.node.split('.')[0]) >= 20 });
-  checks.push({ name: 'config', ok: existsSync(configPath) || existsSync(legacyConfigPath) });
-  checks.push({ name: 'cli-runtime', ok: true });
+  const activeConfigPath = getActiveConfigPath();
+  const hasConfig = existsSync(activeConfigPath);
+  const cfg = hasConfig ? JSON.parse(await readFile(activeConfigPath, 'utf8')) : null;
+
+  const expectedProfiles = [
+    'research-agent',
+    'research-only',
+    'solo-trader-paper',
+    'trading-agent-paper',
+    'trading-agent-live-disabled',
+    'meme-discovery-research',
+    'meme-discovery-trading-paper'
+  ];
+
+  const checks = [
+    {
+      name: 'runtime.node',
+      ok: Number(process.versions.node.split('.')[0]) >= 20,
+      detail: `node=${process.versions.node} (required >=20)`
+    },
+    {
+      name: 'runtime.workspace-deps',
+      ok: true,
+      detail: existsSync(path.join(cwd, 'node_modules')) ? 'node_modules present' : 'node_modules not found in current cwd (acceptable for isolated smoke workspaces)'
+    },
+    {
+      name: 'config.present',
+      ok: hasConfig,
+      detail: hasConfig ? `config found at ${activeConfigPath}` : 'missing .wrenos/config.json (run wrenos init --profile research-agent)'
+    },
+    {
+      name: 'config.profile-known',
+      ok: Boolean(cfg?.profile && expectedProfiles.includes(cfg.profile)),
+      detail: cfg?.profile ? `profile=${cfg.profile}` : 'profile missing'
+    },
+    {
+      name: 'operator.mcp-config',
+      ok: existsSync(path.join(cwd, '.mcp.json')),
+      detail: existsSync(path.join(cwd, '.mcp.json')) ? '.mcp.json present' : '.mcp.json missing (run wrenos init)'
+    },
+    {
+      name: 'inference.route-config',
+      ok: true,
+      detail: (cfg?.inference?.baseUrl || process.env.SPEAKEASY_BASE_URL)
+        ? `baseUrl=${cfg?.inference?.baseUrl || process.env.SPEAKEASY_BASE_URL}`
+        : 'no inference base URL configured (set inference.baseUrl or SPEAKEASY_BASE_URL before route tests)'
+    },
+    {
+      name: 'execution.mode-defined',
+      ok: typeof cfg?.liveExecution === 'boolean',
+      detail: typeof cfg?.liveExecution === 'boolean'
+        ? `liveExecution=${cfg.liveExecution}`
+        : 'liveExecution missing'
+    },
+    {
+      name: 'execution.safety-default',
+      ok: cfg?.liveExecution === false,
+      detail: cfg?.liveExecution === false ? 'paper-safe default active' : 'live execution enabled (requires explicit operator approval)'
+    },
+    {
+      name: 'secrets.wallet',
+      ok: existsSync(path.join(configDir, 'wallet.json')) || cfg?.liveExecution === false,
+      detail: existsSync(path.join(configDir, 'wallet.json'))
+        ? 'wallet scaffold present'
+        : (cfg?.liveExecution === false ? 'wallet optional in paper mode' : 'wallet missing for live-capable execution')
+    }
+  ];
 
   const failed = checks.filter((c) => !c.ok);
-  console.log(JSON.stringify({ ok: failed.length === 0, checks }, null, 2));
+  const warnings = [];
+
+  if (activeConfigPath === legacyConfigPath && hasConfig) {
+    warnings.push(`Legacy config path in use (.0xclaw). Run wrenos migrate before ${DEPRECATION_REMOVAL_TARGET}.`);
+  }
+  if (cfg?.liveExecution === true) {
+    warnings.push('liveExecution=true: verify approvals, signer policy, and risk limits before trading.');
+  }
+
+  console.log(JSON.stringify({
+    ok: failed.length === 0,
+    readyState: failed.length === 0 ? 'ready' : 'needs-attention',
+    profile: cfg?.profile || null,
+    configPath: activeConfigPath,
+    checks,
+    warnings,
+    next: failed.length
+      ? ['Fix failing checks, then re-run: wrenos doctor', 'View snapshot: wrenos status']
+      : ['System diagnostics passed', 'Optional network checks: wrenos test inference && wrenos test execution']
+  }, null, 2));
+
   process.exit(failed.length ? 1 : 0);
 }
 
 async function cmdStatus() {
   const activeConfigPath = getActiveConfigPath();
   const cfg = existsSync(activeConfigPath) ? JSON.parse(await readFile(activeConfigPath, 'utf8')) : null;
+
+  const inferenceBase = cfg?.inference?.baseUrl || process.env.SPEAKEASY_BASE_URL || null;
+  const executionMode = cfg?.liveExecution === true ? 'live' : (cfg?.liveExecution === false ? 'paper' : 'unknown');
+  const approvalRequired = cfg?.requireExplicitApproval ?? true;
+  const confidenceTiers = cfg?.confidenceTierPolicy
+    ? Object.keys(cfg.confidenceTierPolicy)
+    : ['tier0', 'tier1', 'tier2', 'tier3 (template default)'];
+
+  const packs = [
+    { name: 'dual-agent-pack', path: path.join(configDir, 'pack-dual-agent.json') },
+    { name: 'meme-discovery', path: path.join(configDir, 'pack-meme-discovery.json') }
+  ].map((p) => ({ name: p.name, enabled: existsSync(p.path), path: p.path }));
+
   console.log(JSON.stringify({
-    ready: Boolean(cfg),
-    configPath: activeConfigPath,
-    configFormat: activeConfigPath === legacyConfigPath ? 'legacy-compat' : 'wrenos',
-    profile: cfg?.profile || null,
-    liveExecution: cfg?.liveExecution ?? null,
-    heartbeatAdaptive: cfg?.loop?.heartbeatAdaptive ?? null
+    system: {
+      name: 'WrenOS CLI',
+      ready: Boolean(cfg),
+      configPath: activeConfigPath,
+      configFormat: activeConfigPath === legacyConfigPath ? 'legacy-compat' : 'wrenos'
+    },
+    profile: {
+      active: cfg?.profile || null,
+      heartbeatAdaptive: cfg?.loop?.heartbeatAdaptive ?? null,
+      loopEnabled: cfg?.loop?.enabled ?? null
+    },
+    inference: {
+      provider: cfg?.inference?.provider || 'speakeasy',
+      baseUrl: inferenceBase,
+      routes: cfg?.inference?.routes || null
+    },
+    execution: {
+      mode: executionMode,
+      liveExecution: cfg?.liveExecution ?? null,
+      approvalRequired,
+      paperDefault: cfg?.liveExecution === false
+    },
+    safety: {
+      confidenceTiers,
+      fallbackPolicyDefined: Boolean(cfg?.confidenceTierPolicy),
+      warning: cfg?.liveExecution === true ? 'LIVE mode enabled — ensure explicit approvals and signer controls.' : null
+    },
+    operatorInterface: {
+      mcpConfig: existsSync(path.join(cwd, '.mcp.json')),
+      walletConfigured: existsSync(path.join(configDir, 'wallet.json'))
+    },
+    packs,
+    commands: {
+      doctor: 'wrenos doctor',
+      testInference: 'wrenos test inference',
+      testExecution: 'wrenos test execution',
+      migrate: 'wrenos migrate'
+    }
   }, null, 2));
 }
 
@@ -257,22 +395,35 @@ async function cmdTestInference() {
   const cfg = existsSync(activeConfigPath) ? JSON.parse(await readFile(activeConfigPath, 'utf8')) : {};
   const baseUrl = cfg?.inference?.baseUrl || process.env.SPEAKEASY_BASE_URL || 'https://api.speakeasyrelay.com';
 
-  const t0 = Date.now();
-  const health = await fetch(`${baseUrl}/health`);
-  const latencyMs = Date.now() - t0;
-  const modelsResp = await fetch(`${baseUrl}/v1/models`);
-  const modelsJson = modelsResp.ok ? await modelsResp.json() : { data: [] };
+  try {
+    const t0 = Date.now();
+    const health = await fetch(`${baseUrl}/health`);
+    const latencyMs = Date.now() - t0;
+    const modelsResp = await fetch(`${baseUrl}/v1/models`);
+    const modelsJson = modelsResp.ok ? await modelsResp.json() : { data: [] };
 
-  console.log(JSON.stringify({
-    ok: health.ok && modelsResp.ok,
-    baseUrl,
-    latencyMs,
-    healthStatus: health.status,
-    modelsStatus: modelsResp.status,
-    models: (modelsJson.data || []).map((m) => m.id)
-  }, null, 2));
+    console.log(JSON.stringify({
+      ok: health.ok && modelsResp.ok,
+      check: 'inference-routing',
+      baseUrl,
+      latencyMs,
+      healthStatus: health.status,
+      modelsStatus: modelsResp.status,
+      models: (modelsJson.data || []).map((m) => m.id),
+      note: 'Network-dependent diagnostic. Failing here means route/connectivity issue, not local config corruption.'
+    }, null, 2));
 
-  process.exit(health.ok && modelsResp.ok ? 0 : 1);
+    process.exit(health.ok && modelsResp.ok ? 0 : 1);
+  } catch (error) {
+    console.log(JSON.stringify({
+      ok: false,
+      check: 'inference-routing',
+      baseUrl,
+      error: error?.message || String(error),
+      note: 'Network-dependent diagnostic failed. Verify baseUrl, egress, DNS, and remote service health.'
+    }, null, 2));
+    process.exit(1);
+  }
 }
 
 async function cmdTestExecution() {
