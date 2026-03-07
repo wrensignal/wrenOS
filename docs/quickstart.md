@@ -102,11 +102,12 @@ wrenos init --profile solo-trader-paper
 
 WrenOS already supports inspectable setup, diagnostics, profile/pack config, and paper-first example flow.
 
-What is **not yet shipped**:
-- `wrenos start` long-running orchestration command
+What is **currently beta**:
+- `wrenos start` orchestration loop (structured heartbeat logs, paper-safe default, explicit approval posture)
 
 Current expectation:
-- Use your existing scheduler/heartbeat process (cron, supervisor, or platform runtime) for long-running loops.
+- Use `wrenos start --once` for deterministic local checks.
+- For long-running production loops, continue using your scheduler/supervisor until `wrenos start` graduates from beta.
 
 ---
 
@@ -119,7 +120,7 @@ If you're coming from `0xClaw`:
 - run `wrenos migrate` (or `wrenos migrate --force`) to move legacy config
 
 See:
-- `docs/migrating-from-0xclaw-to-wrenos.md`
-- `docs/migration-0xclaw-to-wrenos.md`
+- `docs/migrating-from-0xclaw-to-wrenos.md` (canonical)
+- `docs/migration-0xclaw-to-wrenos.md` (legacy pointer)
 
 For hosted/private inference routing details, see `docs/speakeasy-integration.md`.

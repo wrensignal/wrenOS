@@ -33,8 +33,8 @@ Hosted-default and self-host override interaction:
 - You can apply self-host overrides for endpoints/runtime dependencies.
 - The same operator/profile/pack config model applies in both paths.
 
-Known not-yet-shipped orchestration surface:
-- `wrenos start` (planned)
+Current orchestration surface:
+- `wrenos start` (beta)
 
 ## Layer model
 

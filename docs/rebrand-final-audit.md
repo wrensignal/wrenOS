@@ -65,14 +65,14 @@ Reason: controlled migration window with explicit deprecation warnings.
 Reason: guide users to canonical WrenOS commands/paths.
 
 ### D) Test-only legacy string (non-user-facing)
-- `packages/cli/test/smoke.test.mjs` temp dir prefix: `0xclaw-cli-smoke-`
+- No remaining test-only `0xclaw` temp-dir string in active test files (updated to `wrenos-cli-smoke-`).
 
-Reason: test artifact name only; does not affect operator UX.
+Reason: cleanup complete; no action pending.
 
 ### E) Maintainer-local path residue (minor doc cleanup)
-- `packages/speakeasy-ai/PUBLISH_SPEAKEASY_AI.md` contains local filesystem path with `/projects/0xclaw/repo`
+- No remaining maintainer-local `/projects/0xclaw/repo` path in `packages/speakeasy-ai/PUBLISH_SPEAKEASY_AI.md` (updated to `<repo-root>`).
 
-Reason: maintainer note path; safe but can be normalized later.
+Reason: cleanup complete; no action pending.
 
 ## Follow-up updates applied (post-rebrand polish)
 

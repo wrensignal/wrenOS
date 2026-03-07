@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { mkdir, readFile, writeFile, copyFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, copyFile, appendFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { randomBytes, createHash } from 'node:crypto';
 import path from 'node:path';
@@ -541,6 +541,75 @@ async function cmdMigrate() {
   if (!ok) process.exit(1);
 }
 
+async function cmdStart() {
+  const cfg = await loadConfigOrFail();
+  const once = process.argv.includes('--once');
+  const intervalArg = arg('--interval', null);
+  const intervalSec = Number(intervalArg || cfg?.loop?.cycleIntervalSeconds || 300);
+  const safeIntervalSec = Number.isFinite(intervalSec) && intervalSec > 0 ? intervalSec : 300;
+
+  const mode = cfg?.liveExecution === true ? 'live' : 'paper';
+  const approvalsRequired = cfg?.requireExplicitApproval ?? true;
+  const confidenceTiers = cfg?.confidenceTierPolicy ? Object.keys(cfg.confidenceTierPolicy) : ['tier0', 'tier1', 'tier2', 'tier3'];
+  const logPath = path.join(configDir, 'heartbeat-log.jsonl');
+
+  const header = {
+    ok: true,
+    action: 'start',
+    beta: true,
+    profile: cfg?.profile || null,
+    mode,
+    intervalSec: safeIntervalSec,
+    once,
+    approvalsRequired,
+    safety: {
+      paperModeDefault: mode === 'paper',
+      liveRequiresExplicitEnablement: true,
+      externalSideEffectsRequireApprovals: true,
+      confidenceTiers
+    },
+    note: 'wrenos start is a beta orchestration loop with structured heartbeat logging.'
+  };
+  console.log(JSON.stringify(header, null, 2));
+
+  const tick = async () => {
+    const event = {
+      ts: new Date().toISOString(),
+      type: 'heartbeat_tick',
+      profile: cfg?.profile || null,
+      mode,
+      decision: mode === 'paper' ? 'hold_or_paper_proposal' : 'proposal_requires_approval',
+      approvalsRequired,
+      confidenceTierPolicyPresent: Boolean(cfg?.confidenceTierPolicy),
+      inferenceBaseUrl: cfg?.inference?.baseUrl || process.env.SPEAKEASY_BASE_URL || null,
+      warning: mode === 'live' ? 'Live mode configured; explicit approval gates must be enforced by operator workflow.' : null
+    };
+    await appendFile(logPath, `${JSON.stringify(event)}\n`);
+    console.log(JSON.stringify(event, null, 2));
+  };
+
+  if (once) {
+    await tick();
+    return;
+  }
+
+  await tick();
+  const timer = setInterval(() => {
+    tick().catch((err) => {
+      console.error(JSON.stringify({ ok: false, action: 'start', error: err?.message || String(err) }, null, 2));
+    });
+  }, safeIntervalSec * 1000);
+
+  const shutdown = (signal) => {
+    clearInterval(timer);
+    console.log(JSON.stringify({ ok: true, action: 'start', stopping: true, signal }, null, 2));
+    process.exit(0);
+  };
+
+  process.on('SIGINT', () => shutdown('SIGINT'));
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+}
+
 const AGENTS_MD = `# AGENTS.md — WrenOS Agent Configuration Template
 # Copy this file to .wrenos/AGENTS.md and customise for your deployment.
 
@@ -713,6 +782,8 @@ async function main() {
       console.log('Usage: wrenos test <inference|execution>');
       process.exit(1);
     }
+    case 'start':
+      return cmdStart();
     case 'migrate':
       return cmdMigrate();
     case 'upgrade-config':
@@ -724,7 +795,7 @@ async function main() {
       console.error('[deprecation] `wrenos bootstrap-openclaw` is deprecated; use `wrenos bootstrap-wrenos` instead. Planned removal: '+DEPRECATION_REMOVAL_TARGET+'.');
       return cmdBootstrapWrenos();
     default:
-      console.log('Usage: wrenos <init|init-pack|doctor|status|config|wallet|test|migrate|bootstrap-wrenos> ...');
+      console.log('Usage: wrenos <init|init-pack|doctor|status|config|wallet|test|start|migrate|bootstrap-wrenos> ...');
       process.exit(1);
   }
 }

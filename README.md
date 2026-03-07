@@ -12,7 +12,7 @@ It is designed for operators who want explicit control and auditability, not bla
 - **What works today:** bootstrap/config flows, safety checks, profile/pack setup, inference/execution connectivity tests, and CLI-driven inspectable runtime config.
 - **Hosted default vs self-host override:** works with hosted-default services (for example Speakeasy inference routing), and can run with self-host overrides by replacing endpoints/config.
 - **Safety guarantees:** `liveExecution: false` by default, explicit approvals, confidence-tier fallback behavior, and inspectable JSON/Markdown artifacts.
-- **Not yet shipped:** one-command long-running orchestration (`wrenos start`).
+- **Beta surface:** one-command orchestration loop is available as `wrenos start` (beta).
 
 > This project was previously known as **0xClaw**. See `docs/migrating-from-0xclaw-to-wrenos.md` for migration details.
 > Legacy `0xclaw` CLI + `.0xclaw` config compatibility is supported during the migration window (planned removal: **v0.3.0**).
@@ -21,16 +21,17 @@ It is designed for operators who want explicit control and auditability, not bla
 
 ### Available today
 - `wrenos` CLI lifecycle: `init`, `doctor`, `status`, `config`, `wallet setup`, `test inference`, `test execution`, `init-pack`, `bootstrap-wrenos`, `migrate`
+- deterministic one-command demo: `npm run example:paper`
 - Inspectable file-based config and generated artifacts under `.wrenos/`
 - Evidence-first paper workflow example (`examples/wrenos-paper-happy-path`)
 - CI-ready verification path (`npm run verify` + GitHub Actions CI)
 
 ### Experimental
+- `wrenos start` beta orchestration loop (structured heartbeat logging, paper-safe default, explicit approval posture)
 - Turnkey Telegram/operator UX conventions and some pack ergonomics
 - Rapidly evolving adapter integration surface for multi-venue execution workflows
 
 ### Planned
-- `wrenos start` orchestration command (not shipped yet)
 - Broader deployment automation and managed observability bundles
 
 ## WrenOS pipeline (evidence-first)
@@ -78,6 +79,7 @@ wrenos wallet setup
 wrenos init-pack --pack meme-discovery
 wrenos test inference
 wrenos test execution
+wrenos start --once
 wrenos bootstrap-wrenos
 ```
 
@@ -137,8 +139,8 @@ npm run verify
 - `docs/quickstart.md`
 - `docs/safety.md`
 - `docs/speakeasy-integration.md`
-- `docs/migrating-from-0xclaw-to-wrenos.md`
-- `docs/migration-0xclaw-to-wrenos.md` (legacy alias doc)
+- `docs/migrating-from-0xclaw-to-wrenos.md` (canonical migration guide)
+- `docs/migration-0xclaw-to-wrenos.md` (legacy pointer)
 - `CHANGELOG.md`
 
 ## Landing page prototype
