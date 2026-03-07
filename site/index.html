@@ -126,6 +126,7 @@
         width: 30px;
         height: 30px;
         object-fit: contain;
+        opacity: 0.72;
       }
       .nav-links {
         display: flex;
@@ -156,8 +157,40 @@
         align-items: center;
         padding-top: calc(var(--sectionY) - 24px);
         padding-bottom: calc(var(--sectionY) - 8px);
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.03) 0,
+          rgba(255, 255, 255, 0.03) 1px,
+          transparent 1px,
+          transparent 132px
+        );
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.98) 0%, rgba(0, 0, 0, 0.82) 64%, rgba(0, 0, 0, 0.52) 86%, rgba(0, 0, 0, 0.24) 96%, transparent 100%);
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.98) 0%, rgba(0, 0, 0, 0.82) 64%, rgba(0, 0, 0, 0.52) 86%, rgba(0, 0, 0, 0.24) 96%, transparent 100%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        left: max(var(--sectionX), calc((100vw - var(--maxWidth)) / 2 + var(--sectionX)));
+        top: 34%;
+        width: 540px;
+        height: 540px;
+        background: url('./assets/wren-white.png') center/contain no-repeat;
+        transform: translateY(-50%);
+        opacity: 0.05;
+        pointer-events: none;
+        z-index: 1;
       }
       .hero-layout {
+        position: relative;
+        z-index: 2;
         display: grid;
         align-content: center;
         gap: calc(var(--componentGap) + 4px);
@@ -185,17 +218,41 @@
         margin: 0;
         font-family: var(--fontDisplay);
         font-size: var(--h1);
-        line-height: 1;
+        line-height: 1.1;
         font-weight: var(--regular);
         letter-spacing: -0.01em;
         text-wrap: balance;
+        color: rgba(226, 228, 234, 0.96);
       }
       .sub {
         margin-top: calc(var(--stackGap) + 4px);
-        color: var(--textMuted);
+        color: rgba(234, 236, 242, 0.74);
         font-size: 20px;
         line-height: 1.72;
         max-width: 760px;
+      }
+      .hero-flow {
+        margin-top: calc(var(--stackGap) + 2px);
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: rgba(234, 236, 242, 0.56);
+        font-family: var(--fontMono);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .hero-flow .flow-node {
+        padding: 2px 8px;
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: var(--radiusSm);
+      }
+      .hero-flow .flow-node.gate {
+        border-color: rgba(196, 164, 108, 0.52);
+        color: var(--accent);
+      }
+      .hero-flow .flow-link {
+        opacity: 0.8;
       }
       .meta {
         margin-top: calc(var(--stackGap) / 2);
@@ -236,6 +293,14 @@
       .hero-cards .start-card .start-top {
         justify-content: flex-start;
       }
+      .hero-cards .start-card.primary {
+        border-color: rgba(196, 164, 108, 0.24);
+        background: linear-gradient(180deg, rgba(196, 164, 108, 0.065) 0%, #151518 42%);
+      }
+      .hero-cards .start-card.primary[data-href]:hover {
+        border-color: rgba(196, 164, 108, 0.24);
+        background: linear-gradient(180deg, rgba(196, 164, 108, 0.065) 0%, #151518 42%);
+      }
 
       .signal {
         margin-top: 0;
@@ -257,17 +322,17 @@
         width: 100%;
       }
       .signal-title {
-        margin: 18px 0 0;
+        margin: 26px 0 0;
         font-family: var(--fontDisplay);
         font-size: clamp(34px, 4vw, 48px);
-        line-height: 1.12;
+        line-height: 1.1;
         font-weight: var(--regular);
         letter-spacing: -0.01em;
         color: var(--text);
         text-wrap: balance;
       }
       .signal-prose {
-        margin-top: 36px;
+        margin-top: 32px;
       }
       .signal-prose p {
         margin: 0;
@@ -276,18 +341,22 @@
         line-height: 1.6;
       }
       .signal-prose p + p {
-        margin-top: 36px;
+        margin-top: 32px;
       }
       .signal-prose strong {
         color: var(--textMuted);
         font-weight: var(--semibold);
       }
+      .pipeline-label {
+        margin: 40px 0 12px;
+        color: rgba(160, 165, 178, 0.86);
+      }
       .signal-flow {
-        margin: 48px 0;
+        margin: 40px 0;
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        gap: 10px;
+        gap: 16px;
         flex-wrap: wrap;
       }
       .flow-pill {
@@ -306,7 +375,7 @@
         color: #C4A46C;
       }
       .flow-arrow {
-        color: var(--textMuted);
+        color: rgba(160, 165, 178, 0.62);
         font-size: 14px;
         line-height: 1;
       }
@@ -465,40 +534,116 @@
       .cred-heading {
         font-family: var(--fontDisplay);
         font-size: clamp(34px, 4vw, 48px);
-        line-height: 1.05;
+        line-height: 1.1;
         font-weight: 400;
-        margin: 0;
+        margin: 26px 0 0;
         max-width: 780px;
       }
       .cred-kicker,
       .cred .eyebrow-divider,
       .cred-heading {
-        max-width: 780px;
+        max-width: 720px;
       }
       .cred-stats {
         margin-top: 48px;
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: var(--componentGap);
-        max-width: 820px;
+        max-width: 720px;
+        width: 100%;
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: var(--radiusSm);
+        background: rgba(234, 236, 242, 0.01);
+        padding: 1px 20px 10px 20px;
       }
-      .cred-stat-number {
+      .inventory-label {
+        position: relative;
+        margin: 0 -20px 16px;
+        padding: 0 20px;
+        height: 37px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-family: var(--fontMono);
-        font-size: clamp(48px, 5vw, 64px);
-        line-height: 1.1;
-        font-weight: 400;
-        letter-spacing: -0.01em;
-        color: var(--text);
-      }
-      .cred-stat-label {
-        margin-top: 10px;
-        font-size: 12px;
+        font-size: 11px;
+        line-height: 1;
         letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--textMuted);
+        color: rgba(160, 165, 178, 0.84);
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+      }
+      .inventory-label::before {
+        content: "";
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 50% 50%, rgba(10, 10, 12, 0.96) 0 1.8px, rgba(120, 124, 136, 0.62) 1.8px 100%);
+        box-shadow:
+          22px 0 0 rgba(120, 124, 136, 0.58),
+          44px 0 0 rgba(120, 124, 136, 0.42);
+      }
+      .inventory-command {
+        margin: 0 0 10px;
+        font-family: var(--fontMono);
+        font-size: 12px;
+        line-height: 1.35;
+        color: rgba(234, 236, 242, 0.9);
+      }
+      .inventory-command .prompt {
+        color: var(--accent);
+      }
+      .inventory-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0;
+      }
+      .inventory-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: baseline;
+        font-family: var(--fontMono);
+        font-size: 13px;
+        line-height: 1.35;
+        padding: 2px 0;
+      }
+      .inventory-key {
+        color: rgba(160, 165, 178, 0.7);
+        text-transform: lowercase;
+      }
+      .inventory-val {
+        color: rgba(234, 236, 242, 0.98);
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        font-feature-settings: "tnum" 1;
+      }
+      .inventory-prompt {
+        margin-top: 10px;
+        font-family: var(--fontMono);
+        font-size: 12px;
+        line-height: 1.5;
+        color: rgba(234, 236, 242, 0.76);
+      }
+      .inventory-prompt .prompt {
+        color: var(--accent);
+      }
+      .inventory-cursor {
+        display: inline-block;
+        width: 6px;
+        height: 14px;
+        margin-left: 6px;
+        background: rgba(196, 164, 108, 0.58);
+        vertical-align: -2px;
+        animation: inv-cursor-blink 1.05s steps(1, end) infinite;
+      }
+      @keyframes inv-cursor-blink {
+        0%, 48% { opacity: 1; }
+        49%, 100% { opacity: 0; }
       }
       .cred-prose {
-        margin-top: 48px;
+        margin-top: 32px;
         max-width: 680px;
         font-size: 17px;
         line-height: 1.6;
@@ -506,7 +651,17 @@
         font-weight: 400;
       }
       .cred-prose p + p {
-        margin-top: 24px;
+        margin-top: 32px;
+      }
+      .cred-pullquote {
+        margin: 32px 0;
+        padding-left: 16px;
+        border-left: 2px solid rgba(196, 164, 108, 0.75);
+        font-family: var(--fontDisplay);
+        font-size: clamp(22px, 2.2vw, 24px);
+        line-height: 1.35;
+        color: var(--accent);
+        max-width: 640px;
       }
 
       .start {
@@ -542,6 +697,7 @@
         gap: 24px;
       }
       .start-card {
+        position: relative;
         border: 1px solid rgba(255,255,255,0.06);
         border-radius: var(--radiusMd);
         background: #141416;
@@ -581,6 +737,23 @@
       .start-label {
         color: var(--text);
         font-weight: 600;
+      }
+      .card-corner-arrow {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 18px;
+        height: 18px;
+        opacity: 0.54;
+        pointer-events: none;
+      }
+      .card-corner-arrow .icon-lucide {
+        width: 14px;
+        height: 14px;
+        stroke: rgba(160, 165, 178, 0.86);
+      }
+      .start-card.primary .card-corner-arrow .icon-lucide {
+        stroke: rgba(196, 164, 108, 0.86);
       }
       .badge-mini {
         font-size: 10px;
@@ -676,14 +849,14 @@
         padding-bottom: 120px;
       }
       .toolkit-head {
-        max-width: 880px;
+        max-width: 720px;
       }
       .toolkit-kicker {
         margin: 0;
         color: var(--accent);
       }
       .toolkit-title {
-        margin: 0;
+        margin: 26px 0 0;
         font-family: var(--fontDisplay);
         font-size: clamp(34px, 4vw, 48px);
         line-height: 1.1;
@@ -913,7 +1086,7 @@
         <nav class="nav-links" aria-label="Primary">
           <a href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">Docs</a>
           <a href="https://api.speakeasyrelay.com" target="_blank" rel="noreferrer">Speakeasy</a>
-          <a class="link-btn" href="https://github.com/wrensignal/0xClaw#quick-start" target="_blank" rel="noreferrer">Quick Start</a>
+          <a class="link-btn" href="https://github.com/wrensignal/0xClaw#quick-start" target="_blank" rel="noreferrer">DEPLOY</a>
         </nav>
       </div>
     </header>
@@ -923,7 +1096,7 @@
         <div class="container hero-layout">
           <div class="hero-top">
             <h1>Your agent's trading stack for Solana memecoins.</h1>
-            <p class="sub">Open source trading agents with private inference and safe defaults.</p>
+            <p class="sub">Open source trading agents with private inference and verifiable execution.</p>
           </div>
 
           <div class="hero-cards">
@@ -931,7 +1104,7 @@
               <span class="tool-icon" aria-hidden="true"><svg class="icon-lucide" viewBox="0 0 24 24"><path d="M12 3v6"/><path d="M6 9h12"/><rect x="4" y="9" width="16" height="10" rx="2"/><path d="M8 13h.01"/><path d="M12 13h.01"/><path d="M16 13h.01"/><path d="M8 17h8"/></svg></span>
               <div class="start-body">
                 <div class="start-top">
-                  <span class="start-label caps-label">WrenOS OpenClaw</span>
+                  <span class="start-label caps-label">DEPLOY WRENOS</span>
                 </div>
                 <p class="start-copy">Easy. Safe. Deploy in one-click.</p>
               </div>
@@ -959,18 +1132,18 @@
             <h2 class="signal-title">Agents that trade on evidence, not vibes.</h2>
 
             <div class="signal-prose">
-              <p>This isn't a black-box that trades for you. It's a structured pipeline you control with research, scoring, backtesting, and execution as separate stages you can inspect, tune, and override. The system gives you tooling and guardrails. The strategy is yours.</p>
-              <p>A research agent scans on-chain wallet flows, social signals, and market feeds to surface a ranked watchlist of tokens worth looking at. A trading agent then evaluates each candidate against your strategy rules and <code>regression gate</code>.</p>
+              <p>This isn't a black-box that trades for you.</p>
+              <p>It's a structured pipeline you control with research, scoring, backtesting, and execution as separate stages you can inspect, tune, and override. The system gives you tooling and guardrails. The strategy is yours.</p>
             </div>
 
             <div class="signal-flow" aria-label="Signal to trade flow">
-              <span class="flow-pill">Discover</span>
-              <span class="flow-arrow">→</span>
-              <span class="flow-pill">Score</span>
-              <span class="flow-arrow">→</span>
-              <span class="flow-pill">Validate</span>
-              <span class="flow-arrow">→</span>
-              <span class="flow-pill outcome">Execute</span>
+              <span class="flow-pill">DISCOVER</span>
+              <span class="flow-arrow" aria-hidden="true">→</span>
+              <span class="flow-pill">SCORE</span>
+              <span class="flow-arrow" aria-hidden="true">→</span>
+              <span class="flow-pill">VALIDATE</span>
+              <span class="flow-arrow" aria-hidden="true">→</span>
+              <span class="flow-pill outcome">EXECUTE</span>
             </div>
 
             <p class="signal-start-cue">The goal is simple: give you the tooling, guardrails, and workflow to build conviction from evidence. Execute only what survives your process.</p>
@@ -978,23 +1151,19 @@
             <p class="signal-start-cue">Ready to start?</p>
             <div class="start-grid">
               <article class="start-card primary" data-href="https://github.com/wrensignal/0xClaw/blob/main/RAILWAY_DEPLOY.md">
+                <span class="card-corner-arrow" aria-hidden="true"><svg class="icon-lucide" viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
                 <div class="start-top">
-                  <span class="start-label-row"><span class="tool-icon" aria-hidden="true"><svg class="icon-lucide" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="14" rx="2"/><path d="M8 7h8"/><path d="M8 11h8"/><circle cx="8.5" cy="14.5" r="1"/><circle cx="15.5" cy="14.5" r="1"/><path d="m6 17-2 3"/><path d="m18 17 2 3"/></svg></span><span class="start-label caps-label">WrenOS + RAILWAY</span></span>
-                  <span class="badge-mini reco caps-label">Recommended</span>
+                  <span class="start-label caps-label">DEPLOY IN ONE CLICK</span>
                 </div>
-                <h3 class="start-card-title">Deploy in one click</h3>
                 <p class="start-copy">Deploy on Railway with pre-configured profiles. Connect to Telegram, set your env vars and you're trading in minutes.</p>
-                <div class="start-cta"><a href="https://github.com/wrensignal/0xClaw/blob/main/RAILWAY_DEPLOY.md" target="_blank" rel="noreferrer">Let's go →</a></div>
               </article>
 
               <article class="start-card" data-href="https://github.com/wrensignal/0xClaw">
+                <span class="card-corner-arrow" aria-hidden="true"><svg class="icon-lucide" viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
                 <div class="start-top">
-                  <span class="start-label-row"><span class="tool-icon" aria-hidden="true"><svg class="icon-lucide" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg></span><span class="start-label caps-label">SELF-HOSTED</span></span>
-                  <span class="badge-mini caps-label">Advanced</span>
+                  <span class="start-label caps-label">ALREADY RUNNING OPENCLAW?</span>
                 </div>
-                <h3 class="start-card-title">Already running OpenClaw?</h3>
                 <p class="start-copy">Add WrenOS to your existing setup. Clone the repo, install profiles, wire MCP servers. Full control over every config.</p>
-                <div class="start-cta"><a href="https://github.com/wrensignal/0xClaw" target="_blank" rel="noreferrer">View on GitHub →</a></div>
               </article>
             </div>
           </div>
@@ -1007,26 +1176,22 @@
           <div class="eyebrow-divider" aria-hidden="true"></div>
           <h2 class="cred-heading">Real infrastructure, not a whitepaper.</h2>
 
-          <div class="cred-stats">
-            <div>
-              <div class="cred-stat-number">7</div>
-              <div class="cred-stat-label">Agent profiles</div>
-            </div>
-            <div>
-              <div class="cred-stat-number">310+</div>
-              <div class="cred-stat-label">MCP tools</div>
-            </div>
-            <div>
-              <div class="cred-stat-number">17</div>
-              <div class="cred-stat-label">Vendored skills</div>
-            </div>
+          <div class="cred-stats" aria-label="System inventory">
+            <p class="inventory-label">WrenOS</p>
+            <p class="inventory-command"><span class="prompt">%</span> /system inventory</p>
+            <ul class="inventory-list">
+              <li class="inventory-row"><span class="inventory-key">agent_profiles</span><span class="inventory-val">7</span></li>
+              <li class="inventory-row"><span class="inventory-key">mcp_tools</span><span class="inventory-val">310+</span></li>
+              <li class="inventory-row"><span class="inventory-key">vendored_skills</span><span class="inventory-val">17</span></li>
+            </ul>
+            <p class="inventory-prompt"><span class="prompt">%</span><span class="inventory-cursor" aria-hidden="true"></span></p>
           </div>
 
           <div class="cred-prose">
-            <p>WrenOS runs as an inspectable OpenClaw system. Agent coordination, handoffs, and execution controls are explicit and auditable. Research and strategy evaluation are separated by design. Execution defaults to <code>paper mode</code>.</p>
-            <blockquote class="signal-pullquote">Every token earns its way in: discovered, scored, stress-tested, or rejected.</blockquote>
-            <p>Strategy inference routes through Speakeasy for private models with zero content logging. Your agent can reason about MEV strategies, analyze arbitrage patterns, and evaluate opportunities that frontier models refuse to discuss. Four model routes: <code>deepseek-v3.2</code> for research, <code>qwen3-thinking</code> for deep reasoning, <code>qwen3-coder</code> for refinement, <code>venice-uncensored</code> for unrestricted analysis.</p>
-            <p>Fail-safe controls are built in: <code>confidence tiers</code> automatically degrade as data quality drops, reducing risk before execution. Everything is open source under <code>Apache-2.0</code>, so you can inspect the full stack end to end.</p>
+            <p>WrenOS runs as an inspectable OpenClaw system. Agent coordination, handoffs, and execution controls are explicit and auditable. Research and strategy evaluation are separated by design.</p>
+            <blockquote class="cred-pullquote">Every token earns its way in: discovered, scored, stress-tested, or rejected.</blockquote>
+            <p>Strategy inference routes through Speakeasy for private models with zero content logging. Research agents evaluate signals and strategies across multiple reasoning models.</p>
+            <p>Execution begins in paper mode by default, and fail-safe controls are built in. Confidence tiers automatically degrade as data quality drops, reducing risk before execution. Everything is open source under Apache-2.0 so you can inspect the full stack end to end.</p>
           </div>
         </div>
       </section>
